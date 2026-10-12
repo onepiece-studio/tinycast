@@ -21,8 +21,9 @@ struct QuickActionsSettingsView: View {
             Section {
                 Toggle(isOn: enabledBinding) {
                     SettingsFeatureToggleLabel(
-                        anchor: .quickActionsQuickActions, title: "Enable Quick Actions",
-                        subtitle: "Act on selected text. Nothing is read until you press a shortcut.")
+                        row: .quickActionsQuickActionsEnableQuickActions,
+                        subtitle: String(
+                            localized: "Act on selected text. Nothing is read until you press a shortcut."))
                 }
                 if appSettings.quickActionsEnabled, !isTrusted {
                     // Every shortcut fails without it; better said here than found one press later.
@@ -108,7 +109,7 @@ struct QuickActionsSettingsView: View {
             Button {
                 customEditing = CustomQuickActionEditRequest(action: nil)
             } label: {
-                SettingsRowTitle(.quickActionsActions, "Add Quick Action")
+                SettingsRowTitle(.quickActionsActionsAddQuickAction)
             }
         } header: {
             SettingsSectionHeader(.quickActionsActions)
@@ -121,19 +122,19 @@ struct QuickActionsSettingsView: View {
 
     private func builtInRow(_ action: BuiltInQuickAction) -> some View {
         let entry = CommandCatalog.entry(for: CommandID(action))
-        return SettingsRow(title: action.title, subtitle: subtitle(for: .builtIn(action))) {
+        return SettingsRow(title: action.localizedTitle, subtitle: subtitle(for: .builtIn(action))) {
             Image(systemName: action.symbol)
                 .frame(width: Theme.Size.settingsRowIcon)
         } trailing: {
             if !action.usesTranslationFramework {
-                editButton(title: action.title) { editingAction = action }
+                editButton(title: action.localizedTitle) { editingAction = action }
             }
             // The four left the Commands pane with their kind, and its alias field with it.
             if let entry { AliasField(entry: entry) }
             ShortcutRecorder(action: .command(CommandID(action)), isQuiet: true)
-            resultPicker(title: action.title, selection: previewBinding(action))
+            resultPicker(title: action.localizedTitle, selection: previewBinding(action))
                 .disabled(action.alwaysPreviews)
-            if let entry { launcherToggle(title: action.title, entry: entry) }
+            if let entry { launcherToggle(title: action.localizedTitle, entry: entry) }
         }
     }
 
@@ -170,11 +171,11 @@ struct QuickActionsSettingsView: View {
                 selection: store.model,
                 select: store.select,
                 modelLabel: {
-                    SettingsRowTitle(.quickActionsModel, "Model")
+                    SettingsRowTitle(.quickActionsModelModel)
                     Text("Unless an action sets its own.")
                 },
                 effortLabel: {
-                    SettingsRowTitle(.quickActionsModel, "Reasoning effort")
+                    SettingsRowTitle(.quickActionsModelReasoningEffort)
                 }
             )
         } header: {
@@ -194,7 +195,7 @@ struct QuickActionsSettingsView: View {
                     Text(TextTranslator.displayName(of: $0)).tag($0.minimalIdentifier)
                 }
             } label: {
-                SettingsRowTitle(.quickActionsTranslate, "Translate to")
+                SettingsRowTitle(.quickActionsTranslateTranslateTo)
             }
         } header: {
             SettingsSectionHeader(.quickActionsTranslate)
@@ -207,7 +208,7 @@ struct QuickActionsSettingsView: View {
 
     private func subtitle(for action: QuickAction) -> String? {
         let details = [
-            action.alwaysPreviews ? "Always shown in a panel" : nil,
+            action.alwaysPreviews ? String(localized: "Always shown in a panel") : nil,
             store.modelOverride(for: action).map(routeTitle)
         ].compactMap(\.self)
         return details.isEmpty ? nil : details.joined(separator: " · ")
@@ -216,7 +217,7 @@ struct QuickActionsSettingsView: View {
     private func routeTitle(_ selection: AIModelSelection) -> String {
         let model = modelChoices.first { $0.matches(selection) }?.title ?? selection.model
         guard let effort = selection.effort else { return model }
-        return "\(model) (\(ChatGPTSubscription.Effort(id: effort, detail: nil).title))"
+        return String(localized: "\(model) (\(ChatGPTSubscription.Effort(id: effort, detail: nil).title))")
     }
 
     private var enabledBinding: Binding<Bool> {
@@ -309,8 +310,11 @@ struct QuickActionsSettingsView: View {
         var body: some View {
             VStack(alignment: .leading, spacing: Theme.Spacing.xl) {
                 SettingsEditorHeader(
-                    title: "Customize \(action.title)",
-                    subtitle: "Tell Tinycast how you want \(action.title) to handle your selected text."
+                    title: String(localized: "Customize \(action.localizedTitle)"),
+                    subtitle: String(
+                        localized:
+                            "Tell Tinycast how you want \(action.localizedTitle) to handle your selected text."
+                    )
                 )
 
                 TextEditor(text: $instructions)

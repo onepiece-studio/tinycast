@@ -408,9 +408,9 @@ private struct ChatReasoningBlock: View {
     @State private var expanded = false
 
     private var title: String {
-        if isThinking { return "Thinking…" }
-        guard let duration = block.duration else { return "Thoughts" }
-        return "Thought for \(max(1, Int(duration.rounded())))s"
+        if isThinking { return String(localized: "Thinking…") }
+        guard let duration = block.duration else { return String(localized: "Thoughts") }
+        return String(localized: "Thought for \(max(1, Int(duration.rounded())))s")
     }
 
     /// A match inside a folded block would be found and then invisible, so find unfolds it.
@@ -444,7 +444,8 @@ private struct ChatReasoningBlock: View {
                 .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
-            .accessibilityLabel(isOpen ? "Hide reasoning" : "Show reasoning")
+            .accessibilityLabel(
+                isOpen ? String(localized: "Hide reasoning") : String(localized: "Show reasoning"))
             if isOpen {
                 Text(highlight?.attributed(block.text, leaf: path) ?? AttributedString(block.text))
                     .findAnchor(highlight, leaf: path)
@@ -553,7 +554,8 @@ private struct ChatToolRun: View {
                     }
                     .buttonStyle(.plain)
                     .accessibilityLabel(uses.completedLabel)
-                    .accessibilityValue(isExpanded ? "Expanded" : "Collapsed")
+                    .accessibilityValue(
+                        isExpanded ? String(localized: "Expanded") : String(localized: "Collapsed"))
                     if isExpanded {
                         VStack(alignment: .leading, spacing: metrics.spacing.sm) {
                             ForEach(uses, id: \.callID) { use in
@@ -619,7 +621,7 @@ private struct ChatSearchRow: View {
             } else {
                 ProgressView().controlSize(.small)
             }
-            Text(search.isComplete ? "Searched web" : "Searching web")
+            Text(search.isComplete ? String(localized: "Searched web") : String(localized: "Searching web"))
                 .font(metrics.typography.rowTrailing)
             if let query = search.query, !query.isEmpty {
                 Text("· \(query)")

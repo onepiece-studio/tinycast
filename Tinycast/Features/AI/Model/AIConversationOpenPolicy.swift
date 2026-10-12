@@ -6,13 +6,6 @@ enum AIOpensTo: Int, CaseIterable, Identifiable, Sendable {
     case newConversation = 1
 
     var id: Int { rawValue }
-
-    var title: String {
-        switch self {
-        case .recent: return "Recent Conversation"
-        case .newConversation: return "A New Conversation"
-        }
-    }
 }
 
 /// Minutes as the raw value, `never` negative so it cannot collide with the 0 an unset key reads.
@@ -24,10 +17,6 @@ enum AINewChatAfter: Int, CaseIterable, Identifiable, Sendable {
     case never = -1
 
     var id: Int { rawValue }
-
-    var title: String {
-        self == .never ? "Never" : "\(rawValue) Minutes"
-    }
 
     var interval: TimeInterval { TimeInterval(rawValue) * 60 }
 }

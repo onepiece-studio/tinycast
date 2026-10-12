@@ -690,10 +690,9 @@ struct CalendarTests {
                 == DateInterval(start: midnight, end: date(year: 2026, month: 8, day: 30, hour: 0)),
             "the week runs seven days from the same start, today included")
         expect(
-            MeetingSpan.today.possessivePhrase == "today's"
-                && MeetingSpan.todayAndTomorrow.orPhrase == "today or tomorrow"
-                && MeetingSpan.nextSevenDays.possessivePhrase == "the next 7 days'"
-                && MeetingSpan.nextSevenDays.orPhrase == "in the next 7 days",
+            MeetingSpan.today.emptyScheduleMessage == "Nothing scheduled today"
+                && MeetingSpan.todayAndTomorrow.emptyScheduleMessage == "Nothing scheduled today or tomorrow"
+                && MeetingSpan.nextSevenDays.emptyScheduleMessage == "Nothing scheduled in the next 7 days",
             "the wording follows the span")
     }
 

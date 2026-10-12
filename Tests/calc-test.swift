@@ -1982,7 +1982,7 @@ struct CalcTests {
             fail(query, expected: "error: \(expected)", got: "nil / value")
             return
         }
-        check(query, expected: expected, got: message)
+        check(query, expected: expected, got: String(localized: message))
     }
 
     /// No snapshot has landed yet — first run, or still offline.
@@ -1994,7 +1994,7 @@ struct CalcTests {
             fail(query, expected: "error: \(expected)", got: "nil / value")
             return
         }
-        check(query, expected: expected, got: message)
+        check(query, expected: expected, got: String(localized: message))
     }
 
     static func expectExpression(_ query: String, _ expected: String, region: String? = nil) {

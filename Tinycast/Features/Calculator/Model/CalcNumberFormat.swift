@@ -6,13 +6,6 @@ enum CalcNumberStyle: String, CaseIterable, Identifiable, Sendable {
     case english
 
     var id: String { rawValue }
-
-    var title: String {
-        switch self {
-        case .system: "System"
-        case .english: "English"
-        }
-    }
 }
 
 /// Separators the user writes; the engine only reads English. See docs/features/calculator.md.

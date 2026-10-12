@@ -182,14 +182,6 @@ enum SearchSensitivity: String, CaseIterable, Identifiable, Sendable {
 
     var id: String { rawValue }
 
-    var title: String {
-        switch self {
-        case .low: "Low"
-        case .medium: "Medium"
-        case .high: "High"
-        }
-    }
-
     /// `queryLength` is in the units the outcome was scored against.
     func accepts(_ outcome: LauncherMatch.Outcome, queryLength: Int) -> Bool {
         guard case .scored(let score, let skipped) = outcome else { return true }

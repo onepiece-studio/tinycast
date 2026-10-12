@@ -128,10 +128,10 @@ private extension MeetingDetails.Attendee.Response {
 
     var label: String {
         switch self {
-        case .accepted: "Accepted"
-        case .tentative: "Maybe"
-        case .declined: "Declined"
-        case .pending: "No response"
+        case .accepted: String(localized: "Accepted")
+        case .tentative: String(localized: "Maybe")
+        case .declined: String(localized: "Declined")
+        case .pending: String(localized: "No response")
         }
     }
 }

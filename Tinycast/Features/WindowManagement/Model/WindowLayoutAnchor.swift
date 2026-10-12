@@ -17,21 +17,6 @@ enum WindowLayoutAnchor: String, Codable, CaseIterable, Sendable {
         WindowPlacementEngine.Anchor(horizontal: horizontal, vertical: vertical)
     }
 
-    /// The accessibility label for the grid button, and the name a settings row shows.
-    var title: String {
-        switch self {
-        case .topLeft: return "Top Left"
-        case .top: return "Top"
-        case .topRight: return "Top Right"
-        case .left: return "Left"
-        case .center: return "Center"
-        case .right: return "Right"
-        case .bottomLeft: return "Bottom Left"
-        case .bottom: return "Bottom"
-        case .bottomRight: return "Bottom Right"
-        }
-    }
-
     private var horizontal: WindowPlacementEngine.Anchor.Axis {
         switch self {
         case .topLeft, .left, .bottomLeft: return .min

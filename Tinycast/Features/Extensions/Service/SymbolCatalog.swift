@@ -5,8 +5,10 @@ struct SymbolCategory: Identifiable, Hashable, Sendable {
     let id: String
     let title: String
 
-    static let suggested = SymbolCategory(id: "tinycast.suggested", title: "Suggested")
-    static let all = SymbolCategory(id: "tinycast.all", title: "All Symbols")
+    static let suggested = SymbolCategory(
+        id: "tinycast.suggested", title: String(localized: "Suggested", table: "Extensions"))
+    static let all = SymbolCategory(
+        id: "tinycast.all", title: String(localized: "All Symbols", table: "Extensions"))
     static let bundled = SymbolCategory(id: "tinycast.bundled", title: "Tinycast")
 }
 

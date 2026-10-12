@@ -94,18 +94,6 @@ enum ClipboardRetention: Int, CaseIterable, Identifiable, Sendable {
 
     var id: Int { rawValue }
 
-    var title: String {
-        switch self {
-        case .day: return "1 Day"
-        case .week: return "1 Week"
-        case .month: return "1 Month"
-        case .threeMonths: return "3 Months"
-        case .sixMonths: return "6 Months"
-        case .year: return "1 Year"
-        case .forever: return "Forever"
-        }
-    }
-
     var maxAge: TimeInterval {
         self == .forever ? .greatestFiniteMagnitude : TimeInterval(rawValue) * 86_400
     }
@@ -118,14 +106,6 @@ enum ClipboardDefaultAction: String, CaseIterable, Identifiable, Sendable {
     case pastePlainText
 
     var id: String { rawValue }
-
-    var title: String {
-        switch self {
-        case .paste: return "Paste"
-        case .copy: return "Copy to Clipboard"
-        case .pastePlainText: return "Paste as Plain Text"
-        }
-    }
 
     /// What `chord` runs on `item` with this as the default; nil when it has no text to paste.
     func action(for chord: ClipboardChord, on item: ClipboardItem) -> Self? {

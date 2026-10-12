@@ -151,7 +151,7 @@ final class HyperKeyManager: HealthCheckable {
         hotKeys.setSecureInputHint(
             swallowsCapsLock ? KeyShortcut(carbonKeyCode: kVK_F18, carbonModifiers: 0) : nil
         ) { [weak self] in
-            self?.onProblem?("The Hyper Key can't work while Secure Input is on")
+            self?.onProblem?(String(localized: "The Hyper Key can't work while Secure Input is on"))
         }
     }
 
@@ -235,7 +235,7 @@ final class HyperKeyManager: HealthCheckable {
     private func name(
         of identity: HyperKeyConflictPolicy.KeyboardIdentity, among keyboards: [HIDEventSystem.Keyboard]
     ) -> String {
-        if identity.isDefault { return "All keyboards" }
+        if identity.isDefault { return String(localized: "All keyboards") }
         return keyboards.first {
             $0.vendorID == identity.vendorID && $0.productID == identity.productID
         }?.name ?? "Keyboard \(identity.vendorID)-\(identity.productID)"

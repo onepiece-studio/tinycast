@@ -26,6 +26,13 @@ if [ "${1:-}" = "--exec" ]; then
         : > "$BIN/$name.failed"
         exit 0
     }
+    if [ "$name" = "localization-test" ]; then
+        if ! ./Scripts/check-localization.sh --sources "$@" > "$BIN/$name.log" 2>&1; then
+            fail "catalog or language verification failed"
+        fi
+        printf '\033[32mok\033[0m    %-25s catalogs and three app languages\n' "$name"
+        exit 0
+    fi
     TIMEFORMAT=%1R
     if ! compiled=$( { time swiftc -swift-version 6 "$opt" "$@" "Tests/$name.swift" -o "$BIN/$name" > "$BIN/$name.log" 2>&1; } 2>&1 ); then
         fail "did not compile"
@@ -87,6 +94,20 @@ run() {
     shift
     if [ -n "$only" ] && [ "$name" != "$only" ]; then return 0; fi
     if [ "$index_only" -eq 1 ] && [ "$emit_db" -eq 0 ]; then return 0; fi
+    local presentation
+    local presentations=()
+    for source in "$@"; do
+        case "$source" in
+            */Model/*.swift)
+                presentation="${source%/Model/*}/Service/${source##*/}"
+                presentation="${presentation%.swift}Presentation.swift"
+                if [ -f "$presentation" ] && [[ " $* " != *" $presentation "* ]]; then
+                    presentations+=("$presentation")
+                fi
+                ;;
+        esac
+    done
+    if [ "${#presentations[@]}" -gt 0 ]; then set -- "$@" "${presentations[@]}"; fi
     ran=$((ran + 1))
 
     # Absolute paths throughout: sourcekit-lsp resolves the command itself and does not apply
@@ -142,7 +163,8 @@ run favorites-test         $L/FavoriteSlots.swift
 run launcher-file-test     $L/LauncherFileFormat.swift \
                            Tinycast/Features/Settings/Model/SettingsFileJSON.swift
 run launcher-settings-file-test \
-                           $L/LauncherFileFormat.swift $L/CommandID.swift $L/CommandCatalog.swift \
+                           $L/LauncherFileFormat.swift $L/CommandID.swift Tinycast/Features/Launcher/Service/CommandCatalog.swift \
+                           Tinycast/Features/Launcher/Service/CommandIDPresentation.swift \
                            Tinycast/Features/Launcher/Service/LauncherSettingsFile.swift \
                            Tinycast/Features/Launcher/Service/AliasStore.swift \
                            Tinycast/Features/Launcher/Service/VisibilityStore.swift \
@@ -649,9 +671,19 @@ run slow ext-test          -parse-as-library \
                            Tinycast/Platform/Compression/Zlib.swift \
                            Tinycast/Features/Clipboard/Model/ColorValue.swift \
                            Tinycast/Features/Clipboard/Model/ColorSpaces.swift
+run localization-test      Tinycast/Features/Settings/SettingsTab.swift \
+                           Tinycast/Features/Settings/SettingsAnchor.swift \
+                           Tinycast/Features/Settings/SettingsRowID.swift \
+                           Tinycast/Features/Settings/SettingsSearchCatalog.swift \
+                           $L/SearchRelevance.swift $L/CommandID.swift \
+                           Tinycast/Features/Launcher/Service/CommandIDPresentation.swift \
+                           Tinycast/Features/QuickActions/Model/BuiltInQuickAction.swift \
+                           Tinycast/Features/Calculator/Model/CurrencyData.generated.swift \
+                           Tinycast/Features/Calculator/UI/CalculatorPresentation.swift
 run settings-history-test  Tinycast/Features/Settings/SettingsTab.swift \
                            Tinycast/Features/Settings/SettingsHistory.swift \
                            Tinycast/Features/Settings/SettingsAnchor.swift \
+                           Tinycast/Features/Settings/SettingsRowID.swift \
                            Tinycast/Features/Settings/SettingsNavigationState.swift \
                            Tinycast/Features/Settings/SettingsSearchCatalog.swift \
                            $L/SearchRelevance.swift

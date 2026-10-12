@@ -22,43 +22,52 @@ struct CustomCommandEditorView: View {
         ScrollViewReader { proxy in
             ScrollView {
                 VStack(spacing: metrics.spacing.xxl) {
-                    FormRow("Name & Icon") { nameField }.id(CustomCommandEditorSession.Field.name)
-                    FormRow("Command", alignment: .top) {
+                    FormRow(String(localized: "Name & Icon")) { nameField }.id(
+                        CustomCommandEditorSession.Field.name)
+                    FormRow(String(localized: "Command"), alignment: .top) {
                         VStack(alignment: .leading, spacing: metrics.spacing.md) {
                             FormTextArea(
                                 text: $editor.shellCommand, selection: $editor.selection,
                                 focused: focusBinding(.command), minimumHeight: metrics.size.headerHeight * 2,
-                                label: "Shell command", isCode: true, moveFocus: editor.advanceFocus
+                                label: String(localized: "Shell command"), isCode: true,
+                                moveFocus: editor.advanceFocus
                             )
                             .formFieldChrome(focused: focusedField == .command)
-                            detail("Example: /usr/bin/pmset displaysleepnow")
+                            detail(String(localized: "Example: /usr/bin/pmset displaysleepnow"))
                         }
                     }
                     .id(CustomCommandEditorSession.Field.command)
-                    FormRow("Run In", alignment: .top) { workingDirectoryField }
+                    FormRow(String(localized: "Run In"), alignment: .top) { workingDirectoryField }
                         .id(CustomCommandEditorSession.Field.workingDirectory)
                     FormRow(
-                        "Arguments", alignment: .top,
+                        String(localized: "Arguments"), alignment: .top,
                         labelInset: editor.arguments.isEmpty ? 0 : metrics.spacing.lg
                     ) { argumentsSection }
                     FormRow("") {
                         VStack(alignment: .leading, spacing: metrics.spacing.lg) {
                             option(
-                                "Show in root search",
-                                detail: "List this command alongside apps and other commands.",
+                                String(localized: "Show in root search"),
+                                detail: String(
+                                    localized: "List this command alongside apps and other commands."),
                                 value: $editor.showsInRootSearch, focus: .rootSearch)
                             option(
-                                "Load shell environment",
-                                detail: "Sources ~/.zshrc for aliases, functions and PATH. Slower to start.",
+                                String(localized: "Load shell environment"),
+                                detail: String(
+                                    localized:
+                                        "Sources ~/.zshrc for aliases, functions and PATH. Slower to start."),
                                 value: $editor.loadsShellEnvironment, focus: .shellEnvironment)
                             option(
-                                "Needs confirmation", detail: "Ask before running this command.",
+                                String(localized: "Needs confirmation"),
+                                detail: String(localized: "Ask before running this command."),
                                 value: $editor.requiresConfirmation, focus: .confirmation)
                             option(
-                                "Show confirmation", detail: "Confirm on screen after the command succeeds.",
+                                String(localized: "Show confirmation"),
+                                detail: String(localized: "Confirm on screen after the command succeeds."),
                                 value: $editor.showsConfirmation, focus: .successConfirmation)
                             option(
-                                "Show output", detail: "Open a window with everything the command prints.",
+                                String(localized: "Show output"),
+                                detail: String(
+                                    localized: "Open a window with everything the command prints."),
                                 value: $editor.showsOutput, focus: .output)
                             if let errorMessage = editor.errorMessage {
                                 detail(errorMessage).foregroundStyle(.orange)
@@ -106,8 +115,9 @@ struct CustomCommandEditorView: View {
     private var nameField: some View {
         HStack(spacing: 0) {
             FormTextInput(
-                text: $editor.name, focused: focusBinding(.name), placeholder: "Command name",
-                label: "Command name", moveFocus: editor.advanceFocus)
+                text: $editor.name, focused: focusBinding(.name),
+                placeholder: String(localized: "Command name"),
+                label: String(localized: "Command name"), moveFocus: editor.advanceFocus)
             Rectangle().fill(Theme.Colors.separator)
                 .frame(width: Theme.Size.hairline, height: metrics.size.menuIcon)
             iconMenu
@@ -153,7 +163,7 @@ struct CustomCommandEditorView: View {
         } action: {
             iconMenuFrame = $0
         }
-        .tooltip("Choose an icon", alignment: .trailing, dismissOnPress: true)
+        .tooltip(String(localized: "Choose an icon"), alignment: .trailing, dismissOnPress: true)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("Command icon")
         .accessibilityAddTraits(.isButton)
@@ -163,7 +173,7 @@ struct CustomCommandEditorView: View {
     private func showIconMenu() {
         let items =
             [
-                PopoverMenuItem(title: "Automatic", systemImage: CustomCommand.sfSymbol) {
+                PopoverMenuItem(title: String(localized: "Automatic"), systemImage: CustomCommand.sfSymbol) {
                     editor.iconSymbol = nil
                 }
             ]
@@ -181,13 +191,14 @@ struct CustomCommandEditorView: View {
             HStack(spacing: 0) {
                 FormTextInput(
                     text: $editor.workingDirectory, focused: focusBinding(.workingDirectory),
-                    placeholder: "Home folder", label: "Run In", moveFocus: editor.advanceFocus)
+                    placeholder: String(localized: "Home folder"), label: String(localized: "Run In"),
+                    moveFocus: editor.advanceFocus)
                 action(.chooseDirectory, perform: coordinator.chooseWorkingDirectory) { Text("Choose…") }
                     .padding(.horizontal, metrics.spacing.xl)
             }
             .frame(height: metrics.size.dialogButtonHeight)
             .formFieldChrome(focused: focusedField == .workingDirectory || focusedField == .chooseDirectory)
-            detail("The folder the command starts in. Leave empty for your home folder.")
+            detail(String(localized: "The folder the command starts in. Leave empty for your home folder."))
         }
     }
 
@@ -200,7 +211,8 @@ struct CustomCommandEditorView: View {
                         .foregroundStyle(Theme.Colors.textSecondary)
                     FormTextInput(
                         text: $argument.name, focused: focusBinding(.argumentName(id)),
-                        placeholder: "Argument name", label: "Argument name", moveFocus: editor.advanceFocus
+                        placeholder: String(localized: "Argument name"),
+                        label: String(localized: "Argument name"), moveFocus: editor.advanceFocus
                     )
                     .frame(height: metrics.size.dialogButtonHeight)
                     .formFieldChrome(focused: focusedField == .argumentName(id))
@@ -234,8 +246,10 @@ struct CustomCommandEditorView: View {
             .disabled(editor.arguments.count >= CustomCommandArgument.limit)
             detail(
                 editor.arguments.isEmpty
-                    ? "Add up to three, filled in beside the search field before the command runs."
-                    : "Passed to the command in order as $1, $2 …")
+                    ? String(
+                        localized:
+                            "Add up to three, filled in beside the search field before the command runs.")
+                    : String(localized: "Passed to the command in order as $1, $2 …"))
         }
     }
 

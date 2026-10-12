@@ -28,17 +28,16 @@ struct SettingsTabIcon: View {
 }
 
 struct SettingsFeatureToggleLabel: View {
-    let anchor: SettingsAnchor
-    let title: String
+    let row: SettingsRowID
     let subtitle: String
 
     var body: some View {
         HStack(spacing: Theme.Spacing.lg) {
             SettingsTabIcon(
-                systemImage: anchor.tab.systemImage, tint: .accentColor,
+                systemImage: row.anchor.tab.systemImage, tint: .accentColor,
                 size: Theme.Size.settingsRowIcon * 1.5)
             VStack(alignment: .leading, spacing: Theme.Spacing.xxs) {
-                SettingsRowTitle(anchor, title)
+                SettingsRowTitle(row)
                     .fontWeight(.semibold)
                 Text(subtitle)
                     .font(.subheadline)
@@ -56,7 +55,7 @@ struct SettingsRow<Icon: View, Trailing: View>: View {
     var alignment: VerticalAlignment = .center
     var labelOpacity = 1.0
     /// Set when a search result points at this row, so its title can carry the pulse.
-    var anchor: SettingsAnchor?
+    var row: SettingsRowID?
     @ViewBuilder var icon: Icon
     @ViewBuilder var trailing: Trailing
 
@@ -65,8 +64,8 @@ struct SettingsRow<Icon: View, Trailing: View>: View {
             icon.opacity(labelOpacity)
             VStack(alignment: .leading, spacing: Theme.Spacing.xxs) {
                 Group {
-                    if let anchor {
-                        SettingsRowTitle(anchor, title)
+                    if let row {
+                        SettingsRowTitle(row)
                     } else {
                         Text(title)
                     }
@@ -97,13 +96,13 @@ extension SettingsRow where Icon == EmptyView {
     init(
         title: String, subtitle: String? = nil, subtitleLineLimit: Int = 1,
         alignment: VerticalAlignment = .center,
-        labelOpacity: Double = 1, anchor: SettingsAnchor? = nil,
+        labelOpacity: Double = 1, row: SettingsRowID? = nil,
         @ViewBuilder trailing: () -> Trailing
     ) {
         self.init(
             title: title, subtitle: subtitle, subtitleLineLimit: subtitleLineLimit,
             alignment: alignment, labelOpacity: labelOpacity,
-            anchor: anchor, icon: { EmptyView() },
+            row: row, icon: { EmptyView() },
             trailing: trailing)
     }
 }
@@ -289,7 +288,7 @@ private struct SettingsEditorPanelSurface: ViewModifier {
 /// A feature pane's opening section: the master switch, then its launcher-visibility companion.
 struct FeatureSwitchSection: View {
     let anchor: SettingsAnchor
-    let enableTitle: String
+    let row: SettingsRowID
     var enableSubtitle: String?
     @Binding var isEnabled: Bool
     @Binding var showsInLauncher: Bool
@@ -309,9 +308,9 @@ struct FeatureSwitchSection: View {
             Toggle(isOn: $isEnabled) {
                 if showsIcon, let enableSubtitle {
                     SettingsFeatureToggleLabel(
-                        anchor: anchor, title: enableTitle, subtitle: enableSubtitle)
+                        row: row, subtitle: enableSubtitle)
                 } else {
-                    SettingsRowTitle(anchor, enableTitle)
+                    SettingsRowTitle(row)
                     if let enableSubtitle { Text(enableSubtitle) }
                 }
             }

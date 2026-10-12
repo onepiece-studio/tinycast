@@ -9,15 +9,6 @@ enum AIRetention: Int, CaseIterable, Identifiable, Sendable {
 
     var id: Int { rawValue }
 
-    var title: String {
-        switch self {
-        case .week: return "7 Days"
-        case .month: return "30 Days"
-        case .threeMonths: return "3 Months"
-        case .forever: return "Forever"
-        }
-    }
-
     /// The instant before which a conversation is too old to keep, or `nil` when nothing expires.
     func cutoff(from now: Date) -> Date? {
         self == .forever ? nil : now.addingTimeInterval(-TimeInterval(rawValue) * 86_400)

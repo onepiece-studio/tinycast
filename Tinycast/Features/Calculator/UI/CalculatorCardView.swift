@@ -48,12 +48,13 @@ struct CalculatorCard: View {
                 HStack(spacing: 0) {
                     LeadCardColumn(
                         text: CalcSyntax.highlighted(result.expression),
-                        badge: result.sourceBadge)
+                        badge: CalculatorPresentation.badge(result.sourceBadge))
                     Image(systemName: "arrow.right")
                         .font(.title3.weight(.semibold))
                         .foregroundStyle(.tertiary)
                     LeadCardColumn(
-                        text: CalcSyntax.highlighted(display), badge: result.targetBadge,
+                        text: CalcSyntax.highlighted(display),
+                        badge: CalculatorPresentation.badge(result.targetBadge),
                         weight: .semibold)
                 }
                 .fixedSize(horizontal: false, vertical: true)
@@ -61,7 +62,7 @@ struct CalculatorCard: View {
                 HStack(spacing: metrics.spacing.md) {
                     Image(systemName: "exclamationmark.triangle")
                         .symbolRenderingMode(.hierarchical)
-                    Text(message)
+                    Text(String(localized: message))
                         .lineLimit(1)
                 }
                 .font(.body)
@@ -115,21 +116,23 @@ private enum CalcSyntax {
 enum CalcActionsMenu {
     static func content(result: CalcResult, core: AppCore) -> PopoverMenuContent {
         var items = [
-            PopoverMenuItem(title: "Copy Answer", systemImage: "doc.on.doc", shortcut: "↵") {
+            PopoverMenuItem(title: String(localized: "Copy Answer"), systemImage: "doc.on.doc", shortcut: "↵")
+            {
                 core.calculatorCoordinator.copyCalculatorResult(result)
             }
         ]
         if result.canChain {
             items.append(
                 PopoverMenuItem(
-                    title: "Put Answer in Search Bar", systemImage: "text.cursor", shortcut: "⌘↵"
+                    title: String(localized: "Put Answer in Search Bar"), systemImage: "text.cursor",
+                    shortcut: "⌘↵"
                 ) {
                     core.calculatorCoordinator.putAnswerInSearchBar(result)
                 })
         }
         items.append(
             PopoverMenuItem(
-                title: "Copy Calculation", systemImage: "doc.on.doc.fill", shortcut: "⇧⌘↵"
+                title: String(localized: "Copy Calculation"), systemImage: "doc.on.doc.fill", shortcut: "⇧⌘↵"
             ) {
                 core.calculatorCoordinator.copyCalculationWithExpression(result)
             })

@@ -15,7 +15,7 @@ struct CalcExpressionParser {
     var usedCurrency = false
     var usedCurrencyRate = false
     var currencyCodes: [String] = []
-    var issue: String?
+    var issue: String.LocalizationValue?
 
     private static let unaryBindingPower = 25
     private static let compositeBindingPower = 40
@@ -168,7 +168,9 @@ struct CalcExpressionParser {
         case (.unit(let lhs), .unit(let rhs)):
             guard lhs.isCompatible(with: rhs) else {
                 return fail(
-                    "Cannot \(op == .add ? "add" : "subtract") \(lhs.category.displayName) and \(rhs.category.displayName)."
+                    op == .add
+                        ? "Cannot add \(lhs.category.displayName) and \(rhs.category.displayName)."
+                        : "Cannot subtract \(lhs.category.displayName) and \(rhs.category.displayName)."
                 )
             }
             if lhs.category == .temperature, lhs.symbol != rhs.symbol {
@@ -198,11 +200,15 @@ struct CalcExpressionParser {
                 amount: converted + direction * right.amount, kind: .currency(rhs))
         case (.unit(let lhs), .currency):
             return fail(
-                "Cannot \(op == .add ? "add" : "subtract") \(lhs.category.displayName) and Currency."
+                op == .add
+                    ? "Cannot add \(lhs.category.displayName) and Currency."
+                    : "Cannot subtract \(lhs.category.displayName) and Currency."
             )
         case (.currency, .unit(let rhs)):
             return fail(
-                "Cannot \(op == .add ? "add" : "subtract") Currency and \(rhs.category.displayName)."
+                op == .add
+                    ? "Cannot add Currency and \(rhs.category.displayName)."
+                    : "Cannot subtract Currency and \(rhs.category.displayName)."
             )
         // A bare number takes the unit beside it; adjacency stays silent, being a half-typed unit.
         case (.unit, .scalar), (.currency, .scalar):
@@ -680,7 +686,7 @@ struct CalcExpressionParser {
         return false
     }
 
-    private mutating func fail(_ message: String) -> CalcValue? {
+    private mutating func fail(_ message: String.LocalizationValue) -> CalcValue? {
         issue = message
         return nil
     }

@@ -9,7 +9,7 @@ final class LauncherSettingsFile {
         case app, pane
 
         var kind: AppEntry.Kind { self == .app ? .application : .systemSettings }
-        var noun: String { self == .app ? "app" : "settings pane" }
+        var noun: String { self == .app ? "app" : String(localized: "settings pane") }
 
         func action(_ bundleID: String) -> HotKeyAction {
             self == .app ? .app(bundleID: bundleID) : .settingsPane(bundleID: bundleID)
@@ -58,7 +58,7 @@ final class LauncherSettingsFile {
                 name: action.id.rawValue, preferenceKey: action.entryID,
                 action: .systemAction(id: action.id))
         }
-        return catalogBinding(for: key, items: items, noun: "system action")
+        return catalogBinding(for: key, items: items, noun: String(localized: "system action"))
     }
 
     /// The built-in commands `owner` lists; nil is the Commands pane's own.

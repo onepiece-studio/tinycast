@@ -27,7 +27,7 @@ final class AIChatCoordinator {
         self.settingsCoordinator = settingsCoordinator
         self.core = core
         window = AppWindowController(
-            title: "AI Chat", contentSize: Theme.Size.aiChatWindow,
+            title: String(localized: "AI Chat"), contentSize: Theme.Size.aiChatWindow,
             minimumSize: Theme.Size.aiChatWindowMinimum, resizable: true,
             autosaveName: "AIChatWindow", activation: core.activationPolicy, closesOnEscape: true)
         chats.onReplyFinished = { [weak self] chat in self?.nameIfNeeded(chat) }
@@ -107,15 +107,16 @@ final class AIChatCoordinator {
 
     func openChat(id: UUID) {
         guard chats.openInWindow(id: id) else {
-            core.showMessage("That chat could not be opened.", tone: .danger)
+            core.showMessage(String(localized: "That chat could not be opened."), tone: .danger)
             return
         }
     }
 
     /// The sidebar's filter is the view's own state, so ⌃Tab walks every saved chat.
     func openAdjacentChat(step: Int) {
-        guard let target = history.conversations.pinnedFirst.adjacent(
-            to: chats.window.session.id, step: step)
+        guard
+            let target = history.conversations.pinnedFirst.adjacent(
+                to: chats.window.session.id, step: step)
         else { return }
         openChat(id: target.id)
     }
@@ -152,7 +153,7 @@ final class AIChatCoordinator {
     func copyChat(id: UUID) {
         guard let markdown = markdownTranscript(of: id) else { return }
         Paster.copyPlainText(markdown.text)
-        core.showMessage("Chat copied")
+        core.showMessage(String(localized: "Chat copied"))
     }
 
     /// The same Markdown Copy Chat makes, written where the reader chooses.
@@ -166,7 +167,7 @@ final class AIChatCoordinator {
         do {
             try Data(markdown.text.utf8).write(to: url, options: .atomic)
         } catch {
-            core.showMessage("The chat could not be exported.", tone: .danger)
+            core.showMessage(String(localized: "The chat could not be exported."), tone: .danger)
         }
     }
 
@@ -179,11 +180,12 @@ final class AIChatCoordinator {
     }
 
     func deleteChat(id: UUID) async {
-        let title = core.chatHistory.conversation(id: id)?.displayTitle ?? "This chat"
+        let title = core.chatHistory.conversation(id: id)?.displayTitle ?? String(localized: "This chat")
         guard
             await core.confirm(
-                title: "Delete chat?", message: "“\(title)” will be removed. This can't be undone.",
-                symbol: "trash", confirmTitle: "Delete")
+                title: String(localized: "Delete chat?"),
+                message: String(localized: "“\(title)” will be removed. This can't be undone."),
+                symbol: "trash", confirmTitle: String(localized: "Delete"))
         else { return }
         core.chatGPTSubscription.turns.discardConversation(id: id)
         chats.delete(id: id)
@@ -192,10 +194,13 @@ final class AIChatCoordinator {
     func deleteAllChats() async {
         guard
             await core.confirm(
-                title: "Delete all chats?",
-                message: "Every saved conversation except pinned ones will be removed. "
-                    + "This can't be undone.",
-                symbol: "trash", confirmTitle: "Delete All")
+                title: String(localized: "Delete all chats?"),
+                message: String(
+                    localized: """
+                        Every saved conversation except pinned ones will be removed. \
+                        This can't be undone.
+                        """),
+                symbol: "trash", confirmTitle: String(localized: "Delete All"))
         else { return }
         for conversation in core.chatHistory.conversations where !conversation.isPinned {
             core.chatGPTSubscription.turns.discardConversation(id: conversation.id)
@@ -472,7 +477,7 @@ final class AIChatCoordinator {
         panel.canChooseDirectories = false
         panel.allowsMultipleSelection = true
         panel.prompt = "Attach"
-        panel.message = "Choose images, PDFs or text files to send with your next message."
+        panel.message = String(localized: "Choose images, PDFs or text files to send with your next message.")
         NSApp.activate(ignoringOtherApps: true)
         guard panel.runModal() == .OK else { return }
         attach(files: panel.urls, to: chat)
@@ -514,7 +519,7 @@ final class AIChatCoordinator {
             guard let self, let chat else { return }
             guard generation == chat.stagingGeneration else {
                 core.showMessage(
-                    "That file was still loading and did not make it into the chat.",
+                    String(localized: "That file was still loading and did not make it into the chat."),
                     tone: .neutral)
                 return
             }
@@ -582,7 +587,7 @@ final class AIChatCoordinator {
         for chat: AIChatState, toolServers: AIToolServerSession? = nil
     ) throws -> any AIProvider {
         guard let selection = model(for: chat) else {
-            throw AIProviderError.unavailable("Choose a default AI model in Settings.")
+            throw AIProviderError.unavailable(String(localized: "Choose a default AI model in Settings."))
         }
         return try AIProviderFactory.make(
             selection: selection, settings: core.aiSettings,
@@ -601,7 +606,7 @@ final class AIChatCoordinator {
 
     /// Shortened here, not by layout: a flexible label would take the row from the search field.
     func modelTitle(of selected: AIModelSelection?, among options: [AIModelOption]) -> String {
-        guard let selected else { return "Choose Model" }
+        guard let selected else { return String(localized: "Choose Model") }
         let title = options.first { $0.matches(selected) }?.title ?? selected.model
         guard title.count > Self.maxModelTitleLength else { return title }
         let keep = Self.maxModelTitleLength / 2
@@ -667,7 +672,7 @@ final class AIChatCoordinator {
     func selectedReasoningTitle(for chat: AIChatState) -> String {
         guard let selected = model(for: chat)?.effort,
             let effort = reasoningEfforts(for: chat).first(where: { $0.id == selected })
-        else { return "Reasoning" }
+        else { return String(localized: "Reasoning") }
         return effort.title
     }
 
@@ -721,6 +726,6 @@ struct ChatContextReport: Equatable {
 
     var accessibilitySummary: String {
         let percent = fill.formatted(.percent.precision(.fractionLength(0)))
-        return "Context \(percent), \(sentMessages) of \(totalMessages) messages sent"
+        return String(localized: "Context \(percent), \(sentMessages) of \(totalMessages) messages sent")
     }
 }

@@ -17,17 +17,23 @@ struct ExtensionGitHubPanel: View {
     var body: some View {
         VStack(alignment: .leading, spacing: Theme.Spacing.xl) {
             ExtensionSettingsEditorHeader(
-                title: "Install from GitHub",
-                subtitle: "Builds an extension from source on this Mac. Only the build is kept — "
-                    + "the source and its dependencies are deleted once it installs.")
+                title: String(localized: "Install from GitHub", table: "Extensions"),
+                subtitle: String(
+                    localized: """
+                        Builds an extension from source on this Mac. Only the build is kept — \
+                        the source and its dependencies are deleted once it installs.
+                        """, table: "Extensions"))
 
             repositoryField
             ExtensionToolchainFields()
                 .disabled(isInstalling)
 
             Text(
-                "Installing runs your package manager and the extension's own build script. "
-                    + "Install only from someone you trust."
+                String(
+                    localized: """
+                        Installing runs your package manager and the extension's own build script. \
+                        Install only from someone you trust.
+                        """, table: "Extensions")
             )
             .font(.caption)
             .foregroundStyle(.secondary)
@@ -36,10 +42,14 @@ struct ExtensionGitHubPanel: View {
             status
 
             HStack(spacing: Theme.Spacing.md) {
-                Button(installedTitle == nil ? "Cancel" : "Done", action: onClose)
-                    .buttonStyle(ExtensionSettingsEditorButtonStyle(role: .cancel))
-                    .keyboardShortcut(.cancelAction)
-                Button("Install", action: install)
+                Button(
+                    installedTitle == nil
+                        ? String(localized: "Cancel", table: "Extensions")
+                        : String(localized: "Done", table: "Extensions"), action: onClose
+                )
+                .buttonStyle(ExtensionSettingsEditorButtonStyle(role: .cancel))
+                .keyboardShortcut(.cancelAction)
+                Button(String(localized: "Install", table: "Extensions"), action: install)
                     .buttonStyle(ExtensionSettingsEditorButtonStyle(role: .primary))
                     .keyboardShortcut(.defaultAction)
                     .disabled(source == nil || isInstalling)
@@ -58,17 +68,21 @@ struct ExtensionGitHubPanel: View {
 
     private var repositoryField: some View {
         VStack(alignment: .leading, spacing: Theme.Spacing.sm) {
-            Text("Repository").font(.callout.weight(.medium))
-            TextField("", text: $repository, prompt: Text("owner/repo, or a link to the extension's folder"))
-                .extensionSettingsEditorTextField()
-                .pointerStyle(.horizontalText)
-                .disabled(isInstalling)
+            Text(String(localized: "Repository", table: "Extensions")).font(.callout.weight(.medium))
+            TextField(
+                "", text: $repository,
+                prompt: Text(
+                    String(localized: "owner/repo, or a link to the extension's folder", table: "Extensions"))
+            )
+            .extensionSettingsEditorTextField()
+            .pointerStyle(.horizontalText)
+            .disabled(isInstalling)
             if let source {
-                Text("Builds \(source.summary).")
+                Text(String(localized: "Builds \(source.summary).", table: "Extensions"))
                     .font(.caption)
                     .foregroundStyle(.secondary)
             } else if !repository.trimmingCharacters(in: .whitespaces).isEmpty {
-                Text("That doesn't look like a GitHub repository.")
+                Text(String(localized: "That doesn't look like a GitHub repository.", table: "Extensions"))
                     .font(.caption)
                     .foregroundStyle(.orange)
             }
@@ -89,9 +103,12 @@ struct ExtensionGitHubPanel: View {
                 .textSelection(.enabled)
                 .fixedSize(horizontal: false, vertical: true)
         } else if let installedTitle {
-            Label("Installed \(installedTitle).", systemImage: "checkmark.circle.fill")
-                .font(.caption)
-                .foregroundStyle(.green)
+            Label(
+                String(localized: "Installed \(installedTitle).", table: "Extensions"),
+                systemImage: "checkmark.circle.fill"
+            )
+            .font(.caption)
+            .foregroundStyle(.green)
         }
     }
 
@@ -131,7 +148,8 @@ private struct ExtensionToolchainFields: View {
         return VStack(alignment: .leading, spacing: Theme.Spacing.xl) {
             VStack(alignment: .leading, spacing: Theme.Spacing.sm) {
                 HStack {
-                    Text("Package manager").font(.callout.weight(.medium))
+                    Text(String(localized: "Package manager", table: "Extensions")).font(
+                        .callout.weight(.medium))
                     Spacer()
                     Picker("", selection: $settings.extensionPackageManager) {
                         ForEach(ExtensionPackageManager.allCases) { manager in
@@ -148,17 +166,24 @@ private struct ExtensionToolchainFields: View {
             }
 
             VStack(alignment: .leading, spacing: Theme.Spacing.sm) {
-                Text("Custom search paths").font(.callout.weight(.medium))
-                TextField("", text: $searchPathsText, prompt: Text("~/.local/share/mise/shims"))
-                    .extensionSettingsEditorTextField()
-                    .pointerStyle(.horizontalText)
-                    .onChange(of: searchPathsText) { _, value in
-                        settings.extensionCustomSearchPaths = Self.parseSearchPaths(value)
-                    }
+                Text(String(localized: "Custom search paths", table: "Extensions")).font(
+                    .callout.weight(.medium))
+                TextField(
+                    "", text: $searchPathsText,
+                    prompt: Text(String(localized: "~/.local/share/mise/shims", table: "Extensions"))
+                )
+                .extensionSettingsEditorTextField()
+                .pointerStyle(.horizontalText)
+                .onChange(of: searchPathsText) { _, value in
+                    settings.extensionCustomSearchPaths = Self.parseSearchPaths(value)
+                }
                 Text(
-                    "Colon-separated, like PATH — checked before Homebrew and the rest. For mise: "
-                        + "~/.local/share/mise/shims. For Nix (Home Manager): "
-                        + "/etc/profiles/per-user/<you>/home-path/bin."
+                    String(
+                        localized: """
+                            Colon-separated, like PATH — checked before Homebrew and the rest. For mise: \
+                            ~/.local/share/mise/shims. For Nix (Home Manager): \
+                            /etc/profiles/per-user/<you>/home-path/bin.
+                            """, table: "Extensions")
                 )
                 .font(.caption)
                 .foregroundStyle(.secondary)
@@ -175,7 +200,10 @@ private struct ExtensionToolchainFields: View {
         let additionalSearchPaths = core.settings.extensionCustomSearchPaths
         guard let resolved = chosen.resolve(additionalSearchPaths: additionalSearchPaths) else {
             return chosen == .automatic
-                ? "None found on this Mac. Install pnpm, npm, Yarn or Bun to build an extension."
+                ? String(
+                    localized:
+                        "None found on this Mac. Install pnpm, npm, Yarn or Bun to build an extension.",
+                    table: "Extensions")
                 : "\(chosen.title) isn't installed on this Mac."
         }
         return chosen == .automatic

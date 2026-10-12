@@ -11,8 +11,8 @@ struct NavigationSettingsView: View {
             Section {
                 Toggle(isOn: $settings.navigationEnabled) {
                     SettingsFeatureToggleLabel(
-                        anchor: .navigationNavigation, title: "Enable navigation",
-                        subtitle: "Switch windows and search menu bar items.")
+                        row: .navigationNavigationEnableNavigation,
+                        subtitle: String(localized: "Switch windows and search menu bar items."))
                 }
             }
             .settingsAnchor(.navigationNavigation)
@@ -31,13 +31,13 @@ struct NavigationSettingsView: View {
                 }
 
                 Toggle(isOn: $settings.menuSearchShowsAppleMenu) {
-                    SettingsRowTitle(.navigationMenuSearch, "Show Apple menu items")
+                    SettingsRowTitle(.navigationMenuSearchShowAppleMenuItems)
                 }
 
                 SettingsRow(
-                    title: "Disabled Applications",
-                    subtitle: "Their menus are never searched.",
-                    anchor: .navigationMenuSearch
+                    title: SettingsRowID.navigationMenuSearchDisabledApplications.title,
+                    subtitle: String(localized: "Their menus are never searched."),
+                    row: .navigationMenuSearchDisabledApplications
                 ) {
                     EmptyView()
                 }

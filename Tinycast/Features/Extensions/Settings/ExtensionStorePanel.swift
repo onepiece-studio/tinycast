@@ -25,11 +25,16 @@ struct ExtensionStorePanel: View {
     var body: some View {
         VStack(alignment: .leading, spacing: Theme.Spacing.lg) {
             ExtensionSettingsEditorHeader(
-                title: storeInstall == nil ? "Search Extensions" : "Install Extension",
-                subtitle: "The Raycast Store's extensions arrive built, so they install as they are.")
+                title: storeInstall == nil
+                    ? String(localized: "Search Extensions", table: "Extensions")
+                    : String(localized: "Install Extension", table: "Extensions"),
+                subtitle: String(
+                    localized: "The Raycast Store's extensions arrive built, so they install as they are.",
+                    table: "Extensions"))
             // The same borderless field the panes use, rather than a bordered capsule of its own.
             if storeInstall == nil {
-                SettingsFilterField(prompt: "Search extensions…", query: $query)
+                SettingsFilterField(
+                    prompt: String(localized: "Search extensions…", table: "Extensions"), query: $query)
             }
             content
             // The list scrolls right up to the footer without it, cutting the last row.
@@ -53,8 +58,12 @@ struct ExtensionStorePanel: View {
         } else if searching && results.isEmpty {
             VStack(spacing: Theme.Spacing.md) {
                 ProgressView()
-                Text(storeInstall == nil ? "Searching…" : "Looking up extension…")
-                    .font(.callout).foregroundStyle(.secondary)
+                Text(
+                    storeInstall == nil
+                        ? String(localized: "Searching…", table: "Extensions")
+                        : String(localized: "Looking up extension…", table: "Extensions")
+                )
+                .font(.callout).foregroundStyle(.secondary)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else if let searchFailure {
@@ -87,10 +96,13 @@ struct ExtensionStorePanel: View {
             Image(systemName: "magnifyingglass")
                 .font(.system(size: 28, weight: .light))
                 .foregroundStyle(.tertiary)
-            Text("Search for an extension")
+            Text(String(localized: "Search for an extension", table: "Extensions"))
                 .font(.headline)
             Text(
-                "By name, or by what it does — \u{201C}colour\u{201D}, \u{201C}github\u{201D}, \u{201C}window\u{201D}."
+                String(
+                    localized:
+                        "By name, or by what it does — \u{201C}colour\u{201D}, \u{201C}github\u{201D}, \u{201C}window\u{201D}.",
+                    table: "Extensions")
             )
             .font(.caption)
             .foregroundStyle(.secondary)
@@ -109,7 +121,7 @@ struct ExtensionStorePanel: View {
         HStack {
             Spacer()
             // Escape, not Return: Return belongs to the search field while typing.
-            Button("Done", action: onClose)
+            Button(String(localized: "Done", table: "Extensions"), action: onClose)
                 .buttonStyle(
                     ExtensionSettingsEditorButtonStyle(role: .cancel, fillsWidth: false)
                 )
@@ -260,7 +272,7 @@ private struct StoreRow: View {
                 text: "\(listing.commandCount) command\(listing.commandCount == 1 ? "" : "s")")
             if let downloads = listing.downloadCount, downloads > 0 {
                 StoreFact(symbol: "arrow.down.circle", text: ExtensionListing.abbreviate(downloads))
-                    .help("\(downloads.formatted()) installs")
+                    .help(String(localized: "\(downloads.formatted()) installs", table: "Extensions"))
             }
         }
         .font(.caption)
@@ -271,7 +283,7 @@ private struct StoreRow: View {
     private var action: some View {
         switch state {
         case .idle:
-            Button("Install", action: onInstall)
+            Button(String(localized: "Install", table: "Extensions"), action: onInstall)
                 .buttonStyle(ExtensionSettingsEditorButtonStyle(role: .primary, fillsWidth: false))
         case .installing(let message):
             HStack(spacing: Theme.Spacing.sm) {
@@ -280,15 +292,18 @@ private struct StoreRow: View {
             }
             .fixedSize()
         case .installed:
-            Label("Installed", systemImage: "checkmark.circle.fill")
+            Label(String(localized: "Installed", table: "Extensions"), systemImage: "checkmark.circle.fill")
                 .font(.callout)
                 .foregroundStyle(.green)
         case .alreadyInstalled:
-            Button("Reinstall", action: onInstall)
+            Button(String(localized: "Reinstall", table: "Extensions"), action: onInstall)
                 .buttonStyle(ExtensionSettingsEditorButtonStyle(role: .standard, fillsWidth: false))
-                .help("Already installed. Reinstalling replaces it with the store's copy.")
+                .help(
+                    String(
+                        localized: "Already installed. Reinstalling replaces it with the store's copy.",
+                        table: "Extensions"))
         case .failed:
-            Button("Retry", action: onInstall)
+            Button(String(localized: "Retry", table: "Extensions"), action: onInstall)
                 .buttonStyle(ExtensionSettingsEditorButtonStyle(role: .standard, fillsWidth: false))
         }
     }

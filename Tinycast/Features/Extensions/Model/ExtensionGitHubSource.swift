@@ -45,11 +45,6 @@ struct ExtensionGitHubSource: Hashable, Sendable {
         repository = parts[1]
     }
 
-    var summary: String {
-        let location = [owner, repository, path].filter { !$0.isEmpty }.joined(separator: "/")
-        return ref == Self.defaultRef ? "\(location) on its default branch" : "\(location) at \(ref)"
-    }
-
     /// Trees, not contents: contents caps a directory at 1000 and costs a call per level.
     func treeURL(sha: String, recursive: Bool = false) -> URL? {
         var components = URLComponents(

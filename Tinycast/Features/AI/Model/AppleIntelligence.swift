@@ -8,20 +8,6 @@ enum AppleIntelligenceStatus: Equatable, Sendable {
     case modelNotReady
 
     var isAvailable: Bool { self == .available }
-
-    /// `nil` while the model can run, so a caller can treat it as the whole failure condition.
-    var message: String? {
-        switch self {
-        case .available:
-            return nil
-        case .deviceNotEligible:
-            return "This Mac does not support Apple Intelligence."
-        case .notEnabled:
-            return "Turn on Apple Intelligence in System Settings to chat on device."
-        case .modelNotReady:
-            return "Apple Intelligence is still downloading its model. Try again shortly."
-        }
-    }
 }
 
 enum AppleIntelligence {

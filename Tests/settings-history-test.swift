@@ -210,17 +210,17 @@ struct SettingsHistoryTests {
     /// The pulse outlives the pane that started it, and only its own owner may put it out.
     static func flashOutlivesThePaneThatLitIt() {
         let navigation = SettingsNavigationState(tab: .general)
-        navigation.select(.clipboard, revealing: .row(.clipboardHistory, "Keep history for"))
-        navigation.beginFlash(.row(.clipboardHistory, "Keep history for"))
-        expect(navigation.flashing == .row(.clipboardHistory, "Keep history for"), "the revealed row is lit")
+        navigation.select(.clipboard, revealing: .row(.clipboardHistoryKeepHistoryFor))
+        navigation.beginFlash(.row(.clipboardHistoryKeepHistoryFor))
+        expect(navigation.flashing == .row(.clipboardHistoryKeepHistoryFor), "the revealed row is lit")
 
         navigation.endFlash(.section(.generalHyperKey))
         expect(navigation.flashing != nil, "another target can't put it out")
-        navigation.endFlash(.row(.clipboardHistory, "Keep history for"))
+        navigation.endFlash(.row(.clipboardHistoryKeepHistoryFor))
         expect(navigation.flashing == nil, "its own owner can")
 
         // A jump that lands elsewhere must not leave the old light burning behind it.
-        navigation.beginFlash(.row(.clipboardHistory, "Keep history for"))
+        navigation.beginFlash(.row(.clipboardHistoryKeepHistoryFor))
         navigation.select(.general)
         expect(navigation.flashing == nil, "navigating away clears a stale pulse")
     }

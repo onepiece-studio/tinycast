@@ -761,9 +761,9 @@ system-drawn and a pane reads exactly as macOS System Settings does.
 - **`SettingsAnchor` names a section once, so the catalog and the pane cannot disagree.** An entry
   takes its pane *from* the anchor, so a row filed under the wrong pane won't compile.
   `SettingsSectionHeader(_:)` in a section's `header:` supplies the name and the id a group result
-  scrolls to; `SettingsRowTitle(_:_:)` stands in for the `Text` of a row's own label and does the
+  scrolls to; `SettingsRowTitle(_:)` stands in for the `Text` of a row's own label and does the
   same for one setting. A section with no header of its own takes `.settingsAnchor(_:)`, an id and
-  nothing else. **A catalog entry is `.init(anchor, title)` for one row and `.init(group:_:)` when
+  nothing else. **A catalog entry is `.init(SettingsRowID)` for one row and `.init(group:_:)` when
   no single row answers it** — a list, a section's master switch, a button that lives in another
   row's trailing edge. The half the compiler can't reach — a target nothing declares, which
   navigates and then sits there — is caught by `Scripts/check-settings-search.js`, run from

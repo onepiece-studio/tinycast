@@ -20,7 +20,7 @@ struct CustomWindowSizesSection: View {
             Button {
                 onEdit(nil)
             } label: {
-                SettingsRowTitle(.windowManagementCustomSizes, "New Custom Size")
+                SettingsRowTitle(.windowManagementCustomSizesNewCustomSize)
             }
         } header: {
             SettingsSectionHeader(.windowManagementCustomSizes)

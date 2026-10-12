@@ -75,7 +75,7 @@ struct SnippetRepository: Sendable {
         var id: String { fileURL.standardizedFileURL.path }
     }
 
-    enum RepositoryError: Error, LocalizedError, Sendable, Equatable {
+    enum RepositoryError: Error, Sendable, Equatable {
         case conflict(
             fileURL: URL,
             expected: SnippetSourceRevision,
@@ -84,20 +84,6 @@ struct SnippetRepository: Sendable {
         case fileNotFound(URL)
         case invalidFileLocation(URL)
         case io(fileURL: URL, message: String)
-
-        var errorDescription: String? {
-            switch self {
-            case .conflict(let fileURL, _, _):
-                return
-                    "The snippet changed on disk. Reload it before saving or deleting. (\(fileURL.lastPathComponent))"
-            case .fileNotFound(let fileURL):
-                return "The snippet file no longer exists. (\(fileURL.lastPathComponent))"
-            case .invalidFileLocation(let fileURL):
-                return "The snippet file is outside this Tinycast channel. (\(fileURL.path))"
-            case .io(let fileURL, let message):
-                return "Could not access \(fileURL.path): \(message)"
-            }
-        }
     }
 
     let bundleIdentifier: String
@@ -366,5 +352,4 @@ struct SnippetRepository: Sendable {
             throw .io(fileURL: fileURL, message: error.localizedDescription)
         }
     }
-
 }

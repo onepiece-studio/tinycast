@@ -21,17 +21,16 @@ final class WindowShortcutPresetCoordinator {
         var current = currentBindings()
         var plan = WindowShortcutPresetPlan(preset: preset, current: current)
         guard !plan.assignments.isEmpty else {
-            core.showMessage("\(preset.title) shortcuts already set")
+            core.showMessage(String(localized: "\(preset.title) shortcuts already set"))
             return
         }
         if !plan.overwritten.isEmpty {
             let confirmed = Set(plan.overwritten)
             guard
                 await core.confirm(
-                    title: plan.overwritten.count == 1
-                        ? "Replace 1 shortcut?" : "Replace \(plan.overwritten.count) shortcuts?",
+                    title: String(localized: "Replace \(plan.overwritten.count) shortcuts?"),
                     message: replacementMessage(plan.overwritten, preset: preset),
-                    symbol: "keyboard", confirmTitle: "Replace")
+                    symbol: "keyboard", confirmTitle: String(localized: "Replace"))
             else { return }
             // A settings.json reload can rebind while the dialog waits; never replace an unseen key.
             current = currentBindings()
@@ -62,10 +61,11 @@ final class WindowShortcutPresetCoordinator {
             }
         }
         if skipped.isEmpty {
-            core.showMessage("Applied \(preset.title) shortcuts")
+            core.showMessage(String(localized: "Applied \(preset.title) shortcuts"))
         } else {
             core.showMessage(
-                "Applied \(preset.title) shortcuts — \(skipped.count) skipped, keys in use",
+                String(
+                    localized: "Applied \(preset.title) shortcuts — \(skipped.count) skipped, keys in use"),
                 tone: .danger)
         }
     }
@@ -84,6 +84,7 @@ final class WindowShortcutPresetCoordinator {
         let names = ids.compactMap { WindowCommandCatalog.command(id: $0)?.name }
         let listed = names.prefix(3).joined(separator: ", ")
         let rest = names.count > 3 ? " and \(names.count - 3) more" : ""
-        return "\(listed)\(rest) will use the \(preset.title) keys instead of the ones you set."
+        return String(
+            localized: "\(listed)\(rest) will use the \(preset.title) keys instead of the ones you set.")
     }
 }

@@ -1,11 +1,15 @@
-enum SettingsTab: CaseIterable, Identifiable {
+import Foundation
+
+enum SettingsTab: String, CaseIterable, Identifiable {
     case general, applications, systemSettings, systemActions, commands, quicklinks, appleShortcuts,
         fallbacks, clipboard, snippets, fileSearch, windowManagement, navigation, notes, calendar, emoji,
         dictation, ai, quickActions, extensions, permissions, backup, about
     /// The case, never an index: a selectable `List` flattens section and row IDs together.
     var id: Self { self }
 
-    var title: String {
+    var title: String { String(localized: titleResource) }
+
+    var titleResource: LocalizedStringResource {
         switch self {
         case .general: return "General"
         case .applications: return "Applications"
@@ -68,7 +72,9 @@ enum SettingsSection: CaseIterable, Identifiable {
     /// See `SettingsTab.id`: distinct types keep the two namespaces from colliding.
     var id: Self { self }
 
-    var title: String {
+    var title: String { String(localized: titleResource) }
+
+    var titleResource: LocalizedStringResource {
         switch self {
         case .general: return "General"
         case .launcher: return "Launcher"

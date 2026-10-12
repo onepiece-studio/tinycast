@@ -13,8 +13,8 @@ struct WindowManagementSettingsView: View {
         return Form {
             FeatureSwitchSection(
                 anchor: .windowManagementWindowManagement,
-                enableTitle: "Enable window management",
-                enableSubtitle: "Moves the last window you used. Needs Accessibility.",
+                row: .windowManagementWindowManagementEnableWindowManagement,
+                enableSubtitle: String(localized: "Moves the last window you used. Needs Accessibility."),
                 isEnabled: $settings.windowManagementEnabled,
                 showsInLauncher: $settings.windowManagementShowInLauncher,
                 showsIcon: true,
@@ -67,7 +67,7 @@ struct WindowManagementSettingsView: View {
                     Text(cycle.title).tag(cycle)
                 }
             } label: {
-                SettingsRowTitle(.windowManagementOptions, "Cycling")
+                SettingsRowTitle(.windowManagementOptionsCycling)
                 Text(settings.windowCycle.detail)
             }
 
@@ -77,13 +77,13 @@ struct WindowManagementSettingsView: View {
                         .monospacedDigit()
                         .foregroundStyle(.secondary)
                     Stepper(
-                        "Gap between windows", value: $settings.windowGap,
+                        String(localized: "Gap between windows"), value: $settings.windowGap,
                         in: WindowPlacementEngine.gapRange, step: 2
                     )
                     .labelsHidden()
                 }
             } label: {
-                SettingsRowTitle(.windowManagementOptions, "Gap between windows")
+                SettingsRowTitle(.windowManagementOptionsGapBetweenWindows)
                 Text("Between tiled windows and screen edges.")
             }
 
@@ -107,7 +107,7 @@ struct WindowManagementSettingsView: View {
                             || chosenPreset == core.windowShortcutPresetCoordinator.matchingPreset)
                 }
             } label: {
-                SettingsRowTitle(.windowManagementOptions, "Shortcut preset")
+                SettingsRowTitle(.windowManagementOptionsShortcutPreset)
                 Text("Fills in another app's shortcuts. Others stay as they are.")
             }
         } header: {

@@ -8,13 +8,6 @@ enum WindowShortcutPreset: String, CaseIterable, Identifiable, Sendable {
 
     var id: String { rawValue }
 
-    var title: String {
-        switch self {
-        case .rectangle: "Rectangle / Magnet"
-        case .spectacle: "Spectacle"
-        }
-    }
-
     /// Physical key codes, as each app registers them, so a non-QWERTY layout matches too.
     var bindings: [WindowCommand.ID: HotKeyBinding] {
         switch self {

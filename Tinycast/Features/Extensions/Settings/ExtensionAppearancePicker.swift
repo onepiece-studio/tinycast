@@ -65,10 +65,12 @@ struct ExtensionAppearancePicker: View {
 
             HStack(spacing: Theme.Spacing.sm) {
                 Image(systemName: "magnifyingglass").foregroundStyle(.secondary)
-                TextField("", text: $query, prompt: Text("Search symbols…"))
-                    .textFieldStyle(.plain)
-                    .labelsHidden()
-                    .pointerStyle(.horizontalText)
+                TextField(
+                    "", text: $query, prompt: Text(String(localized: "Search symbols…", table: "Extensions"))
+                )
+                .textFieldStyle(.plain)
+                .labelsHidden()
+                .pointerStyle(.horizontalText)
                 Picker("", selection: $category) {
                     ForEach(catalog.categories) { item in
                         Text(item.title).tag(item)
@@ -80,7 +82,7 @@ struct ExtensionAppearancePicker: View {
 
             let results = catalog.search(query, in: category)
             if results.isEmpty {
-                Text("No symbols match \u{201C}\(query)\u{201D}.")
+                Text(String(localized: "No symbols match \u{201C}\(query)\u{201D}.", table: "Extensions"))
                     .font(.callout)
                     .foregroundStyle(.secondary)
                     // Whole rows: a half one clipped by the footer reads as a rendering bug.
@@ -120,9 +122,9 @@ struct ExtensionAppearancePicker: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 Spacer()
-                Button("Use Original Icon", action: onReset)
+                Button(String(localized: "Use Original Icon", table: "Extensions"), action: onReset)
                     .disabled(!isCustom)
-                    .help("Go back to the icon the extension ships.")
+                    .help(String(localized: "Go back to the icon the extension ships.", table: "Extensions"))
             }
         }
         .padding(Metrics.inset)

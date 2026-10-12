@@ -99,22 +99,6 @@ extension MeetingLink {
         /// Any other http(s) link the event carries — joinable, just not identifiable.
         case generic
 
-        var title: String {
-            switch self {
-            case .zoom: return "Zoom"
-            case .googleMeet: return "Google Meet"
-            case .teams: return "Microsoft Teams"
-            case .webex: return "Webex"
-            case .jitsi: return "Jitsi"
-            case .whereby: return "Whereby"
-            case .chime: return "Amazon Chime"
-            case .gotoMeeting: return "GoTo Meeting"
-            case .blueJeans: return "BlueJeans"
-            case .skype: return "Skype"
-            case .generic: return "Meeting Link"
-            }
-        }
-
         /// No brand artwork ships, so the glyph says only what kind of thing this is.
         var sfSymbol: String { self == .generic ? "link" : "video.fill" }
 

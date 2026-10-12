@@ -10,16 +10,6 @@ enum ExtensionPackageManager: String, CaseIterable, Identifiable, Sendable {
 
     var id: String { rawValue }
 
-    var title: String {
-        switch self {
-        case .automatic: return "Automatic"
-        case .pnpm: return "pnpm"
-        case .npm: return "npm"
-        case .yarn: return "Yarn"
-        case .bun: return "Bun"
-        }
-    }
-
     /// `automatic`'s order: fastest and most disk-frugal first, npm last as the one always there.
     static let preferenceOrder: [ExtensionPackageManager] = [.pnpm, .bun, .yarn, .npm]
 

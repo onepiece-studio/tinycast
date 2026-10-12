@@ -1,129 +1,269 @@
-/// One `Section` inside a pane, named once so the catalog and the pane cannot disagree: the search
-/// result carries the anchor, the pane's `.settingsAnchor(_:)` marks the section it scrolls to.
-struct SettingsAnchor: Hashable, Sendable {
-    let tab: SettingsTab
-    /// The `Section`'s own header text, which is also what a result's breadcrumb reads.
-    let title: String
+import Foundation
+
+enum SettingsAnchor: String, CaseIterable, Sendable {
+    case generalGlobalShortcuts
+    case generalSearch
+    case generalHyperKey
+    case generalAppearance
+    case generalCalculator
+    case generalGeneral
+    case applicationsSearchScopes
+    case applicationsApplications
+    case systemSettingsSystemSettings
+    case systemActionsSystemActions
+    case commandsCommands
+    case commandsCustomCommands
+    case quicklinksQuicklinks
+    case quicklinksCommands
+    case quicklinksBehaviour
+    case quicklinksImportExport
+    case appleShortcutsAppleShortcuts
+    case appleShortcutsShortcuts
+    case fallbacksFallbacks
+    case aiAI
+    case aiProviders
+    case aiDefault
+    case aiChat
+    case aiConversations
+    case aiSystemPrompt
+    case aiMCPServers
+    case aiCommands
+    case quickActionsQuickActions
+    case quickActionsActions
+    case quickActionsModel
+    case quickActionsTranslate
+    case dictationDictation
+    case dictationCommands
+    case dictationModel
+    case dictationMemory
+    case dictationOutput
+    case fileSearchFileSearch
+    case fileSearchCommands
+    case fileSearchSearchScopes
+    case fileSearchIgnorePatterns
+    case notesNotes
+    case notesOptions
+    case notesCommands
+    case snippetsSnippets
+    case snippetsCommands
+    case snippetsLibrary
+    case navigationNavigation
+    case navigationCommands
+    case navigationMenuSearch
+    case windowManagementWindowManagement
+    case windowManagementLayouts
+    case windowManagementRooms
+    case windowManagementLayoutCommands
+    case windowManagementOptions
+    case windowManagementCustomSizes
+    case clipboardClipboard
+    case clipboardCommands
+    case clipboardHistory
+    case clipboardDisabledApplications
+    case emojiCommands
+    case emojiAppearance
+    case calendarCalendar
+    case calendarCommands
+    case calendarJoining
+    case calendarMenuBar
+    case calendarCalendars
+    case extensionsExtensions
+    case extensionsCompatibility
+    case extensionsInstalled
+    case extensionsInstall
+    case extensionsStorage
+    case permissionsAccessibility
+    case permissionsCalendars
+    case permissionsMicrophone
+    case backupExport
+    case backupImport
+    case backupImportFromRaycast
+    case backupSettingsFile
+    case aboutAbout
+    case aboutLinks
+
+    var tab: SettingsTab {
+        switch self {
+        case .generalGlobalShortcuts: .general
+        case .generalSearch: .general
+        case .generalHyperKey: .general
+        case .generalAppearance: .general
+        case .generalCalculator: .general
+        case .generalGeneral: .general
+        case .applicationsSearchScopes: .applications
+        case .applicationsApplications: .applications
+        case .systemSettingsSystemSettings: .systemSettings
+        case .systemActionsSystemActions: .systemActions
+        case .commandsCommands: .commands
+        case .commandsCustomCommands: .commands
+        case .quicklinksQuicklinks: .quicklinks
+        case .quicklinksCommands: .quicklinks
+        case .quicklinksBehaviour: .quicklinks
+        case .quicklinksImportExport: .quicklinks
+        case .appleShortcutsAppleShortcuts: .appleShortcuts
+        case .appleShortcutsShortcuts: .appleShortcuts
+        case .fallbacksFallbacks: .fallbacks
+        case .aiAI: .ai
+        case .aiProviders: .ai
+        case .aiDefault: .ai
+        case .aiChat: .ai
+        case .aiConversations: .ai
+        case .aiSystemPrompt: .ai
+        case .aiMCPServers: .ai
+        case .aiCommands: .ai
+        case .quickActionsQuickActions: .quickActions
+        case .quickActionsActions: .quickActions
+        case .quickActionsModel: .quickActions
+        case .quickActionsTranslate: .quickActions
+        case .dictationDictation: .dictation
+        case .dictationCommands: .dictation
+        case .dictationModel: .dictation
+        case .dictationMemory: .dictation
+        case .dictationOutput: .dictation
+        case .fileSearchFileSearch: .fileSearch
+        case .fileSearchCommands: .fileSearch
+        case .fileSearchSearchScopes: .fileSearch
+        case .fileSearchIgnorePatterns: .fileSearch
+        case .notesNotes: .notes
+        case .notesOptions: .notes
+        case .notesCommands: .notes
+        case .snippetsSnippets: .snippets
+        case .snippetsCommands: .snippets
+        case .snippetsLibrary: .snippets
+        case .navigationNavigation: .navigation
+        case .navigationCommands: .navigation
+        case .navigationMenuSearch: .navigation
+        case .windowManagementWindowManagement: .windowManagement
+        case .windowManagementLayouts: .windowManagement
+        case .windowManagementRooms: .windowManagement
+        case .windowManagementLayoutCommands: .windowManagement
+        case .windowManagementOptions: .windowManagement
+        case .windowManagementCustomSizes: .windowManagement
+        case .clipboardClipboard: .clipboard
+        case .clipboardCommands: .clipboard
+        case .clipboardHistory: .clipboard
+        case .clipboardDisabledApplications: .clipboard
+        case .emojiCommands: .emoji
+        case .emojiAppearance: .emoji
+        case .calendarCalendar: .calendar
+        case .calendarCommands: .calendar
+        case .calendarJoining: .calendar
+        case .calendarMenuBar: .calendar
+        case .calendarCalendars: .calendar
+        case .extensionsExtensions: .extensions
+        case .extensionsCompatibility: .extensions
+        case .extensionsInstalled: .extensions
+        case .extensionsInstall: .extensions
+        case .extensionsStorage: .extensions
+        case .permissionsAccessibility: .permissions
+        case .permissionsCalendars: .permissions
+        case .permissionsMicrophone: .permissions
+        case .backupExport: .backup
+        case .backupImport: .backup
+        case .backupImportFromRaycast: .backup
+        case .backupSettingsFile: .backup
+        case .aboutAbout: .about
+        case .aboutLinks: .about
+        }
+    }
+
+    var titleResource: LocalizedStringResource {
+        switch self {
+        case .generalGlobalShortcuts: "Global Shortcuts"
+        case .generalSearch: "Search"
+        case .generalHyperKey: "Hyper Key"
+        case .generalAppearance: "Appearance"
+        case .generalCalculator: "Calculator"
+        case .generalGeneral: "General"
+        case .applicationsSearchScopes: "Search Scopes"
+        case .applicationsApplications: "Applications"
+        case .systemSettingsSystemSettings: "System Settings"
+        case .systemActionsSystemActions: "System Actions"
+        case .commandsCommands: "Commands"
+        case .commandsCustomCommands: "Custom Commands"
+        case .quicklinksQuicklinks: "Quicklinks"
+        case .quicklinksCommands: "Commands"
+        case .quicklinksBehaviour: "Behaviour"
+        case .quicklinksImportExport: "Import & Export"
+        case .appleShortcutsAppleShortcuts: "Apple Shortcuts"
+        case .appleShortcutsShortcuts: "Shortcuts"
+        case .fallbacksFallbacks: "Fallbacks"
+        case .aiAI: "AI"
+        case .aiProviders: "Providers"
+        case .aiDefault: "Default"
+        case .aiChat: "Chat"
+        case .aiConversations: "Conversations"
+        case .aiSystemPrompt: "System prompt"
+        case .aiMCPServers: "MCP Servers"
+        case .aiCommands: "Commands"
+        case .quickActionsQuickActions: "Quick Actions"
+        case .quickActionsActions: "Actions"
+        case .quickActionsModel: "Model"
+        case .quickActionsTranslate: "Translate"
+        case .dictationDictation: "Dictation"
+        case .dictationCommands: "Commands"
+        case .dictationModel: "Model"
+        case .dictationMemory: "Memory"
+        case .dictationOutput: "Output"
+        case .fileSearchFileSearch: "File Search"
+        case .fileSearchCommands: "Commands"
+        case .fileSearchSearchScopes: "Search Scopes"
+        case .fileSearchIgnorePatterns: "Ignore Patterns"
+        case .notesNotes: "Notes"
+        case .notesOptions: "Options"
+        case .notesCommands: "Commands"
+        case .snippetsSnippets: "Snippets"
+        case .snippetsCommands: "Commands"
+        case .snippetsLibrary: "Library"
+        case .navigationNavigation: "Navigation"
+        case .navigationCommands: "Commands"
+        case .navigationMenuSearch: "Search Menu Bar Items"
+        case .windowManagementWindowManagement: "Window Management"
+        case .windowManagementLayouts: "Window Layouts"
+        case .windowManagementRooms: "Rooms"
+        case .windowManagementLayoutCommands: "Layout and Room Commands"
+        case .windowManagementOptions: "Options"
+        case .windowManagementCustomSizes: "Custom Sizes"
+        case .clipboardClipboard: "Clipboard"
+        case .clipboardCommands: "Commands"
+        case .clipboardHistory: "History"
+        case .clipboardDisabledApplications: "Disabled Applications"
+        case .emojiCommands: "Commands"
+        case .emojiAppearance: "Appearance"
+        case .calendarCalendar: "Calendar"
+        case .calendarCommands: "Commands"
+        case .calendarJoining: "Joining"
+        case .calendarMenuBar: "Menu Bar"
+        case .calendarCalendars: "Calendars"
+        case .extensionsExtensions: "Extensions"
+        case .extensionsCompatibility: "Compatibility"
+        case .extensionsInstalled: "Installed"
+        case .extensionsInstall: "Install"
+        case .extensionsStorage: "Storage"
+        case .permissionsAccessibility: "Accessibility"
+        case .permissionsCalendars: "Calendars"
+        case .permissionsMicrophone: "Microphone"
+        case .backupExport: "Export"
+        case .backupImport: "Import"
+        case .backupImportFromRaycast: "Import from Raycast"
+        case .backupSettingsFile: "Settings File"
+        case .aboutAbout: "About"
+        case .aboutLinks: "Links"
+        }
+    }
+
+    var title: String { String(localized: titleResource) }
 }
 
-// Named `<pane><Section>` throughout, so the constant for a section is always guessable from it.
-extension SettingsAnchor {
-    static let generalGlobalShortcuts = Self(tab: .general, title: "Global Shortcuts")
-    static let generalSearch = Self(tab: .general, title: "Search")
-    static let generalHyperKey = Self(tab: .general, title: "Hyper Key")
-    static let generalAppearance = Self(tab: .general, title: "Appearance")
-    static let generalCalculator = Self(tab: .general, title: "Calculator")
-    static let generalGeneral = Self(tab: .general, title: "General")
-
-    static let applicationsSearchScopes = Self(tab: .applications, title: "Search Scopes")
-    static let applicationsApplications = Self(tab: .applications, title: "Applications")
-
-    static let systemSettingsSystemSettings = Self(tab: .systemSettings, title: "System Settings")
-
-    static let systemActionsSystemActions = Self(tab: .systemActions, title: "System Actions")
-
-    static let commandsCommands = Self(tab: .commands, title: "Commands")
-    static let commandsCustomCommands = Self(tab: .commands, title: "Custom Commands")
-
-    static let quicklinksQuicklinks = Self(tab: .quicklinks, title: "Quicklinks")
-    static let quicklinksCommands = Self(tab: .quicklinks, title: "Commands")
-    static let quicklinksBehaviour = Self(tab: .quicklinks, title: "Behaviour")
-    static let quicklinksImportExport = Self(tab: .quicklinks, title: "Import & Export")
-
-    static let appleShortcutsAppleShortcuts = Self(tab: .appleShortcuts, title: "Apple Shortcuts")
-    static let appleShortcutsShortcuts = Self(tab: .appleShortcuts, title: "Shortcuts")
-
-    static let fallbacksFallbacks = Self(tab: .fallbacks, title: "Fallbacks")
-
-    static let aiAI = Self(tab: .ai, title: "AI")
-    static let aiProviders = Self(tab: .ai, title: "Providers")
-    static let aiDefault = Self(tab: .ai, title: "Default")
-    static let aiChat = Self(tab: .ai, title: "Chat")
-    static let aiConversations = Self(tab: .ai, title: "Conversations")
-    static let aiSystemPrompt = Self(tab: .ai, title: "System prompt")
-    static let aiMCPServers = Self(tab: .ai, title: "MCP Servers")
-    static let aiCommands = Self(tab: .ai, title: "Commands")
-
-    static let quickActionsQuickActions = Self(tab: .quickActions, title: "Quick Actions")
-    static let quickActionsActions = Self(tab: .quickActions, title: "Actions")
-    static let quickActionsModel = Self(tab: .quickActions, title: "Model")
-    static let quickActionsTranslate = Self(tab: .quickActions, title: "Translate")
-
-    static let dictationDictation = Self(tab: .dictation, title: "Dictation")
-    static let dictationCommands = Self(tab: .dictation, title: "Commands")
-    static let dictationModel = Self(tab: .dictation, title: "Model")
-    static let dictationMemory = Self(tab: .dictation, title: "Memory")
-    static let dictationOutput = Self(tab: .dictation, title: "Output")
-
-    static let fileSearchFileSearch = Self(tab: .fileSearch, title: "File Search")
-    static let fileSearchCommands = Self(tab: .fileSearch, title: "Commands")
-    static let fileSearchSearchScopes = Self(tab: .fileSearch, title: "Search Scopes")
-    static let fileSearchIgnorePatterns = Self(tab: .fileSearch, title: "Ignore Patterns")
-
-    static let notesNotes = Self(tab: .notes, title: "Notes")
-    static let notesOptions = Self(tab: .notes, title: "Options")
-    static let notesCommands = Self(tab: .notes, title: "Commands")
-
-    static let snippetsSnippets = Self(tab: .snippets, title: "Snippets")
-    static let snippetsCommands = Self(tab: .snippets, title: "Commands")
-    static let snippetsLibrary = Self(tab: .snippets, title: "Library")
-
-    static let navigationNavigation = Self(tab: .navigation, title: "Navigation")
-    static let navigationCommands = Self(tab: .navigation, title: "Commands")
-    static let navigationMenuSearch = Self(tab: .navigation, title: "Search Menu Bar Items")
-
-    static let windowManagementWindowManagement = Self(
-        tab: .windowManagement, title: "Window Management")
-    static let windowManagementLayouts = Self(tab: .windowManagement, title: "Window Layouts")
-    static let windowManagementRooms = Self(tab: .windowManagement, title: "Rooms")
-    static let windowManagementLayoutCommands = Self(
-        tab: .windowManagement, title: "Layout and Room Commands")
-    static let windowManagementOptions = Self(tab: .windowManagement, title: "Options")
-    static let windowManagementCustomSizes = Self(tab: .windowManagement, title: "Custom Sizes")
-
-    static let clipboardClipboard = Self(tab: .clipboard, title: "Clipboard")
-    static let clipboardCommands = Self(tab: .clipboard, title: "Commands")
-    static let clipboardHistory = Self(tab: .clipboard, title: "History")
-    static let clipboardDisabledApplications = Self(
-        tab: .clipboard, title: "Disabled Applications")
-
-    static let emojiCommands = Self(tab: .emoji, title: "Commands")
-    static let emojiAppearance = Self(tab: .emoji, title: "Appearance")
-
-    static let calendarCalendar = Self(tab: .calendar, title: "Calendar")
-    static let calendarCommands = Self(tab: .calendar, title: "Commands")
-    static let calendarJoining = Self(tab: .calendar, title: "Joining")
-    static let calendarMenuBar = Self(tab: .calendar, title: "Menu Bar")
-    static let calendarCalendars = Self(tab: .calendar, title: "Calendars")
-
-    static let extensionsExtensions = Self(tab: .extensions, title: "Extensions")
-    static let extensionsCompatibility = Self(tab: .extensions, title: "Compatibility")
-    static let extensionsInstalled = Self(tab: .extensions, title: "Installed")
-    static let extensionsInstall = Self(tab: .extensions, title: "Install")
-    static let extensionsStorage = Self(tab: .extensions, title: "Storage")
-
-    static let permissionsAccessibility = Self(tab: .permissions, title: "Accessibility")
-    static let permissionsCalendars = Self(tab: .permissions, title: "Calendars")
-    static let permissionsMicrophone = Self(tab: .permissions, title: "Microphone")
-
-    static let backupExport = Self(tab: .backup, title: "Export")
-    static let backupImport = Self(tab: .backup, title: "Import")
-    static let backupImportFromRaycast = Self(tab: .backup, title: "Import from Raycast")
-    static let backupSettingsFile = Self(tab: .backup, title: "Settings File")
-
-    static let aboutAbout = Self(tab: .about, title: "About")
-    static let aboutLinks = Self(tab: .about, title: "Links")
-}
-
-/// Where a search result lands: a whole section, or one row inside it.
 enum SettingsTarget: Hashable, Sendable {
     case section(SettingsAnchor)
-    /// The row's visible title, which is also the catalog entry's — they are the same string.
-    case row(SettingsAnchor, String)
+    case row(SettingsRowID)
+    case item(SettingsAnchor, String)
 
     var anchor: SettingsAnchor {
         switch self {
-        case .section(let anchor), .row(let anchor, _): return anchor
+        case .section(let anchor), .item(let anchor, _): return anchor
+        case .row(let row): return row.anchor
         }
     }
 

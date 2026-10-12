@@ -93,7 +93,7 @@ struct QuickActionResultView: View {
             HStack(spacing: metrics.spacing.sm) {
                 SymbolImage(name: state.action.symbol, size: metrics.size.quickActionHeaderIcon)
                     .foregroundStyle(Theme.Colors.textSecondary)
-                Text(state.action.title)
+                Text(state.action.localizedTitle)
                     .font(metrics.typography.panelTitle)
                 Spacer(minLength: metrics.spacing.md)
             }

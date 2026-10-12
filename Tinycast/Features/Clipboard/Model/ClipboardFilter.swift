@@ -10,18 +10,6 @@ enum ClipboardFilter: CaseIterable, Sendable {
     case link
     case email
 
-    var title: String {
-        switch self {
-        case .all: return "All Types"
-        case .text: return "Text Only"
-        case .image: return "Images Only"
-        case .file: return "Files Only"
-        case .color: return "Colors Only"
-        case .link: return "Links Only"
-        case .email: return "Emails Only"
-        }
-    }
-
     /// Also the header button's glyph, so it states the active filter without opening the menu.
     var systemImage: String {
         switch self {
@@ -32,19 +20,6 @@ enum ClipboardFilter: CaseIterable, Sendable {
         case .color: return "eyedropper"
         case .link: return "link"
         case .email: return "at"
-        }
-    }
-
-    /// What an empty list says, so a filter hiding every entry explains itself.
-    var emptyMessage: String {
-        switch self {
-        case .all: return "Clipboard history is empty"
-        case .text: return "No text in clipboard history"
-        case .image: return "No images in clipboard history"
-        case .file: return "No files in clipboard history"
-        case .color: return "No colors in clipboard history"
-        case .link: return "No links in clipboard history"
-        case .email: return "No email addresses in clipboard history"
         }
     }
 

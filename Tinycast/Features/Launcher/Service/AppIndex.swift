@@ -21,75 +21,75 @@ struct AppEntry: Identifiable, Hashable, Sendable {
             switch self {
             case .application:
                 return KindDescriptor(
-                    label: "Application", sectionTitle: "Applications",
-                    openVerb: "Open Application", canHideFromSearch: true,
+                    labelResource: "Application", sectionTitleResource: "Applications",
+                    openVerbResource: "Open Application", canHideFromSearch: true,
                     canRevealInFinder: true, canDragOut: true, isSymbolIcon: false, rankPriority: 4)
             case .systemSettings:
                 return KindDescriptor(
-                    label: "System Setting", sectionTitle: "System Settings",
-                    openVerb: "Open System Setting", canHideFromSearch: true,
+                    labelResource: "System Setting", sectionTitleResource: "System Settings",
+                    openVerbResource: "Open System Setting", canHideFromSearch: true,
                     canRevealInFinder: true, canDragOut: false, isSymbolIcon: false, rankPriority: 1)
             case .command:
                 return KindDescriptor(
-                    label: "Command", sectionTitle: "Commands",
-                    openVerb: "Run Command", canHideFromSearch: true,
+                    labelResource: "Command", sectionTitleResource: "Commands",
+                    openVerbResource: "Run Command", canHideFromSearch: true,
                     canRevealInFinder: false, canDragOut: false, isSymbolIcon: true, rankPriority: 3)
             case .quickAction:
                 return KindDescriptor(
-                    label: "Quick Action", sectionTitle: "Quick Actions",
-                    openVerb: "Run Quick Action", canHideFromSearch: true,
+                    labelResource: "Quick Action", sectionTitleResource: "Quick Actions",
+                    openVerbResource: "Run Quick Action", canHideFromSearch: true,
                     canRevealInFinder: false, canDragOut: false, isSymbolIcon: true, rankPriority: 3)
             case .customCommand:
                 return KindDescriptor(
-                    label: "Custom Command", sectionTitle: "Custom Commands",
-                    openVerb: "Run Custom Command", canHideFromSearch: false,
+                    labelResource: "Custom Command", sectionTitleResource: "Custom Commands",
+                    openVerbResource: "Run Custom Command", canHideFromSearch: false,
                     canRevealInFinder: false, canDragOut: false, isSymbolIcon: true, rankPriority: 3)
             case .snippet:
                 return KindDescriptor(
-                    label: "Snippet", sectionTitle: "Snippets",
-                    openVerb: "Paste Snippet", canHideFromSearch: false,
+                    labelResource: "Snippet", sectionTitleResource: "Snippets",
+                    openVerbResource: "Paste Snippet", canHideFromSearch: false,
                     canRevealInFinder: true, canDragOut: false, isSymbolIcon: true, rankPriority: 3)
             case .systemAction:
                 return KindDescriptor(
-                    label: "System Action", sectionTitle: "System Actions",
-                    openVerb: "Run System Action", canHideFromSearch: true,
+                    labelResource: "System Action", sectionTitleResource: "System Actions",
+                    openVerbResource: "Run System Action", canHideFromSearch: true,
                     canRevealInFinder: false, canDragOut: false, isSymbolIcon: true, rankPriority: 3)
             case .windowCommand:
                 return KindDescriptor(
-                    label: "Window Command", sectionTitle: "Window Management",
-                    openVerb: "Move Window", canHideFromSearch: true,
+                    labelResource: "Window Command", sectionTitleResource: "Window Management",
+                    openVerbResource: "Move Window", canHideFromSearch: true,
                     canRevealInFinder: false, canDragOut: false, isSymbolIcon: true, rankPriority: 3)
             case .windowLayout:
                 return KindDescriptor(
-                    label: "Window Layout", sectionTitle: "Window Layouts",
-                    openVerb: "Arrange Windows", canHideFromSearch: true,
+                    labelResource: "Window Layout", sectionTitleResource: "Window Layouts",
+                    openVerbResource: "Arrange Windows", canHideFromSearch: true,
                     canRevealInFinder: false, canDragOut: false, isSymbolIcon: true, rankPriority: 3)
             case .windowRoom:
                 return KindDescriptor(
-                    label: "Room", sectionTitle: "Rooms", openVerb: "Enter Room",
+                    labelResource: "Room", sectionTitleResource: "Rooms", openVerbResource: "Enter Room",
                     canHideFromSearch: true, canRevealInFinder: false, canDragOut: false,
                     isSymbolIcon: true, rankPriority: 3)
             case .quicklink:
                 return KindDescriptor(
-                    label: "Quicklink", sectionTitle: "Quicklinks",
-                    openVerb: "Open Quicklink", canHideFromSearch: false,
+                    labelResource: "Quicklink", sectionTitleResource: "Quicklinks",
+                    openVerbResource: "Open Quicklink", canHideFromSearch: false,
                     canRevealInFinder: false, canDragOut: false, isSymbolIcon: true, rankPriority: 2)
             case .appleShortcut:
                 // File-backed so every row draws the Shortcuts app's own icon.
                 return KindDescriptor(
-                    label: "Apple Shortcut", sectionTitle: "Apple Shortcuts",
-                    openVerb: "Run Shortcut", canHideFromSearch: true,
+                    labelResource: "Apple Shortcut", sectionTitleResource: "Apple Shortcuts",
+                    openVerbResource: "Run Shortcut", canHideFromSearch: true,
                     canRevealInFinder: false, canDragOut: false, isSymbolIcon: false, rankPriority: 3)
             case .extensionCommand:
                 // The label is per-entry, the owning extension's title; this is the fallback.
                 return KindDescriptor(
-                    label: "Extension", sectionTitle: "Extensions",
-                    openVerb: "Run Command", canHideFromSearch: true,
+                    labelResource: "Extension", sectionTitleResource: "Extensions",
+                    openVerbResource: "Run Command", canHideFromSearch: true,
                     canRevealInFinder: false, canDragOut: false, isSymbolIcon: true, rankPriority: 3)
             case .meeting:
                 return KindDescriptor(
-                    label: "Meeting", sectionTitle: "Meetings",
-                    openVerb: "Join Meeting", canHideFromSearch: false,
+                    labelResource: "Meeting", sectionTitleResource: "Meetings",
+                    openVerbResource: "Join Meeting", canHideFromSearch: false,
                     canRevealInFinder: false, canDragOut: false, isSymbolIcon: true, rankPriority: 1)
             }
         }
@@ -97,9 +97,12 @@ struct AppEntry: Identifiable, Hashable, Sendable {
 
     /// Fixed per kind: a new `Kind` case fails to build until it names every field.
     struct KindDescriptor: Sendable {
-        let label: String
-        let sectionTitle: String
-        let openVerb: String
+        let labelResource: LocalizedStringResource
+        var label: String { String(localized: labelResource) }
+        let sectionTitleResource: LocalizedStringResource
+        var sectionTitle: String { String(localized: sectionTitleResource) }
+        let openVerbResource: LocalizedStringResource
+        var openVerb: String { String(localized: openVerbResource) }
         /// Only where Settings lists a per-item checkbox to put it back: a hide is never one-way.
         let canHideFromSearch: Bool
         let canRevealInFinder: Bool
@@ -266,9 +269,9 @@ extension AppEntry {
 
     init(_ command: WindowCommand) {
         self.init(
-            id: command.entryID, name: command.name,
+            id: command.entryID, name: command.localizedName,
             url: URL(string: "tinycast://window-command/" + command.id.rawValue)!,
-            bundleID: nil, kind: .windowCommand)
+            bundleID: nil, kind: .windowCommand, alternateTitles: [command.name])
     }
 
     /// A custom size shares the window commands' kind and section, as custom Quick Actions do.
@@ -317,10 +320,19 @@ extension AppEntry.Kind {
     private static let byCategoryName: [String: AppEntry.Kind] = allCases.reduce(into: [:]) {
         $0[FuzzyMatch.normalized($1.descriptor.sectionTitle)] = $1
         $0[FuzzyMatch.normalized($1.descriptor.label)] = $1
+        $0[FuzzyMatch.normalized($1.descriptor.labelResource.key)] = $1
+        $0[FuzzyMatch.normalized($1.descriptor.sectionTitleResource.key)] = $1
     }
 
     private static let categoryNames = allCases.map { kind in
-        (kind, [kind.descriptor.sectionTitle, kind.descriptor.label].map(FuzzyMatch.Candidate.init))
+        (
+            kind,
+            [
+                kind.descriptor.sectionTitle, kind.descriptor.label,
+                kind.descriptor.sectionTitleResource.key, kind.descriptor.labelResource.key
+            ]
+            .map(FuzzyMatch.Candidate.init)
+        )
     }
 
     static func named(by query: LauncherOrder.CategoryQuery) -> AppEntry.Kind? {
@@ -380,9 +392,9 @@ final class AppIndex {
     private static let systemActionEntries: [AppEntry] = SystemActionCatalog.all
         .map { command in
             AppEntry(
-                id: command.entryID, name: command.name,
+                id: command.entryID, name: command.localizedName,
                 url: URL(string: "tinycast://system-action/" + command.id.rawValue)!,
-                bundleID: nil, kind: .systemAction)
+                bundleID: nil, kind: .systemAction, alternateTitles: [command.name])
         }
         .sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
 

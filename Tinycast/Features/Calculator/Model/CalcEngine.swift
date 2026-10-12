@@ -6,7 +6,7 @@ struct CalcResult: Equatable, Sendable {
         /// `display` is grouped ("1,234,567"); `copyText` is the same answer, ungrouped.
         case value(display: String, copyText: String)
         /// A friendly error, only for a clear conversion attempt — never a half-typed expression.
-        case error(message: String)
+        case error(message: String.LocalizationValue)
 
         static func number(_ value: Double, suffix: String = "") -> Self {
             let text = CalcFormatter.copyText(value)

@@ -205,3 +205,9 @@ left out and decided by hand in `CalcCurrency.contested`. The crypto tickers are
 they have no external source of truth, so `CalcCurrency.crypto` is hand-written, and that same list is
 the set of symbols the fetch asks for. Re-run the script when a currency is added or retired; nothing
 breaks in the meantime, since an unquoted code just reports "no exchange rate".
+
+## Localization
+
+English and Simplified Chinese use Xcode String Catalogs. Command-line builds emit strings but
+require `Scripts/sync-localizations.sh` to update the checked-in catalogs. See
+[localization](features/localization.md) for the editing and verification workflow.

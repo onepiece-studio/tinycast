@@ -11,7 +11,10 @@ struct GeneralSettingsView: View {
         @Bindable var settings = settings
         return Form {
             Section {
-                SettingsRow(title: "App Launcher", anchor: .generalGlobalShortcuts) {
+                SettingsRow(
+                    title: SettingsRowID.generalGlobalShortcutsAppLauncher.title,
+                    row: .generalGlobalShortcutsAppLauncher
+                ) {
                     ShortcutRecorder(action: .togglePalette)
                 }
             } header: {
@@ -20,14 +23,14 @@ struct GeneralSettingsView: View {
 
             Section {
                 Toggle(isOn: $settings.launchAtLogin) {
-                    SettingsRowTitle(.generalGeneral, "Launch at login")
+                    SettingsRowTitle(.generalGeneralLaunchAtLogin)
                 }
                 Toggle(isOn: $settings.showInMenuBar) {
-                    SettingsRowTitle(.generalGeneral, "Show in menu bar")
+                    SettingsRowTitle(.generalGeneralShowInMenuBar)
                     Text("Shortcuts still work when hidden.")
                 }
                 Toggle(isOn: $settings.automaticallyCheckForUpdates) {
-                    SettingsRowTitle(.generalGeneral, "Automatically check for updates")
+                    SettingsRowTitle(.generalGeneralAutomaticallyCheckForUpdates)
                     Text("Check for Updates remains available when off.")
                 }
                 Picker(selection: $settings.popToRootTimeout) {
@@ -35,7 +38,7 @@ struct GeneralSettingsView: View {
                         Text(timeout.title).tag(timeout)
                     }
                 } label: {
-                    SettingsRowTitle(.generalGeneral, "Pop to Root Search")
+                    SettingsRowTitle(.generalGeneralPopToRootSearch)
                     Text("After the launcher closes.")
                 }
                 Picker(selection: $settings.escapeKeyBehavior) {
@@ -43,7 +46,7 @@ struct GeneralSettingsView: View {
                         Text(behavior.title).tag(behavior)
                     }
                 } label: {
-                    SettingsRowTitle(.generalGeneral, "Escape Key Behavior")
+                    SettingsRowTitle(.generalGeneralEscapeKeyBehavior)
                     Text("When the search field is empty.")
                 }
                 // Empty only when TIS fails; one layout still lists, so the row stays put.
@@ -54,7 +57,7 @@ struct GeneralSettingsView: View {
                             Text(source.title).tag(Optional(source.id))
                         }
                     } label: {
-                        SettingsRowTitle(.generalGeneral, "Auto-switch input source")
+                        SettingsRowTitle(.generalGeneralAutoSwitchInputSource)
                         Text("While the launcher is open.")
                     }
                 }
@@ -68,20 +71,20 @@ struct GeneralSettingsView: View {
                         Text(appearance.title).tag(appearance)
                     }
                 } label: {
-                    SettingsRowTitle(.generalAppearance, "Theme")
+                    SettingsRowTitle(.generalAppearanceTheme)
                 }
                 InterfaceSizeRow()
                 WindowModeRow()
                 Toggle(isOn: $settings.showFavoritesInCompactMode) {
-                    SettingsRowTitle(.generalAppearance, "Show favorites in compact mode")
+                    SettingsRowTitle(.generalAppearanceShowFavoritesInCompactMode)
                     Text("Launch them with ⌘1–⌘5.")
                 }
                 .settingsEnabled(settings.compactMode)
                 Toggle(isOn: $settings.openOnCursorScreen) {
-                    SettingsRowTitle(.generalAppearance, "Follow the cursor across displays")
+                    SettingsRowTitle(.generalAppearanceFollowTheCursorAcrossDisplays)
                 }
                 Toggle(isOn: $settings.paletteDraggable) {
-                    SettingsRowTitle(.generalAppearance, "Drag to reposition")
+                    SettingsRowTitle(.generalAppearanceDragToReposition)
                     Text("Drag the strip above the search field.")
                 }
             } header: {
@@ -97,7 +100,7 @@ struct GeneralSettingsView: View {
                         Text("\(style.title) (\(sample))").tag(style)
                     }
                 } label: {
-                    SettingsRowTitle(.generalCalculator, "Number format")
+                    SettingsRowTitle(.generalCalculatorNumberFormat)
                     Text("With a decimal comma, ; separates arguments.")
                 }
             } header: {
@@ -106,7 +109,7 @@ struct GeneralSettingsView: View {
 
             Section {
                 Toggle(isOn: $settings.launcherShowsSuggestions) {
-                    SettingsRowTitle(.generalSearch, "Show suggestions")
+                    SettingsRowTitle(.generalSearchShowSuggestions)
                     Text("What you open most, while the search field is empty.")
                 }
                 Picker(selection: $settings.rootSearchSensitivity) {
@@ -114,7 +117,7 @@ struct GeneralSettingsView: View {
                         Text(sensitivity.title).tag(sensitivity)
                     }
                 } label: {
-                    SettingsRowTitle(.generalSearch, "Search sensitivity")
+                    SettingsRowTitle(.generalSearchSearchSensitivity)
                     Text("Lower finds names from scattered letters.")
                 }
                 LabeledContent {
@@ -123,7 +126,7 @@ struct GeneralSettingsView: View {
                     }
                     .disabled(launcherRanking.isEmpty)
                 } label: {
-                    SettingsRowTitle(.generalSearch, "Learned ranking")
+                    SettingsRowTitle(.generalSearchLearnedRanking)
                     Text("Learned privately from the results you pick.")
                 }
             } header: {
@@ -133,7 +136,7 @@ struct GeneralSettingsView: View {
         .formStyle(.grouped)
         .settingsScrollTarget(.general)
         .confirmationDialog(
-            "Reset learned launcher ranking?",
+            String(localized: "Reset learned launcher ranking?"),
             isPresented: $confirmingRankingReset,
             titleVisibility: .visible
         ) {
@@ -165,12 +168,13 @@ private struct WindowModeRow: View {
 
     var body: some View {
         SettingsRow(
-            title: "Window mode", subtitle: "Choose how the launcher opens.",
-            subtitleLineLimit: 2, alignment: .top, anchor: .generalAppearance
+            title: SettingsRowID.generalAppearanceWindowMode.title,
+            subtitle: String(localized: "Choose how the launcher opens."),
+            subtitleLineLimit: 2, alignment: .top, row: .generalAppearanceWindowMode
         ) {
             HStack(spacing: Theme.Spacing.md) {
-                option("Compact", image: "WindowModeCompact", compact: true)
-                option("Expanded", image: "WindowModeExpanded", compact: false)
+                option(String(localized: "Compact"), image: "WindowModeCompact", compact: true)
+                option(String(localized: "Expanded"), image: "WindowModeExpanded", compact: false)
             }
         }
     }
@@ -237,9 +241,9 @@ private struct InterfaceSizeRow: View {
 
     var body: some View {
         SettingsRow(
-            title: "Interface size",
-            subtitle: "Scales the launcher and its panels, not Settings.",
-            anchor: .generalAppearance
+            title: SettingsRowID.generalAppearanceInterfaceSize.title,
+            subtitle: String(localized: "Scales the launcher and its panels, not Settings."),
+            row: .generalAppearanceInterfaceSize
         ) {
             HStack(spacing: Theme.Spacing.xs) {
                 ForEach(InterfaceSize.allCases) { size in

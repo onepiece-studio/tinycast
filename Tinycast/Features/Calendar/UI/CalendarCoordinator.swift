@@ -105,11 +105,10 @@ final class CalendarCoordinator {
         Task {
             guard
                 await core.confirm(
-                    title: "Enable calendar?",
+                    title: String(localized: "Enable calendar?"),
                     message:
-                        "Tinycast reads \(settings.calendarSpan.possessivePhrase) events "
-                        + "to find join links. Nothing leaves this Mac.",
-                    symbol: "calendar", confirmTitle: "Continue", tone: .neutral,
+                        settings.calendarSpan.permissionMessage,
+                    symbol: "calendar", confirmTitle: String(localized: "Continue"), tone: .neutral,
                     confirmRole: .standard)
             else { return }
 
@@ -255,7 +254,7 @@ final class CalendarCoordinator {
 
     func joinNextMeeting() {
         guard let meeting = nextJoinable() else {
-            report("Nothing to join right now")
+            report(String(localized: "Nothing to join right now"))
             return
         }
         join(meeting)
@@ -263,7 +262,7 @@ final class CalendarCoordinator {
 
     func copyNextMeetingLink() {
         guard let meeting = nextJoinable() else {
-            report("Nothing to join right now")
+            report(String(localized: "Nothing to join right now"))
             return
         }
         copyLink(meeting)
@@ -272,7 +271,7 @@ final class CalendarCoordinator {
     func createEvent() {
         store.refreshAccess()
         guard settings.calendarEnabled, store.access == .granted else {
-            report("Turn Calendar on in Settings first")
+            report(String(localized: "Turn Calendar on in Settings first"))
             return
         }
         guard !paletteCoordinator.isShowing(.eventEditor) else { return }
@@ -286,20 +285,20 @@ final class CalendarCoordinator {
         store.refreshAccess()
         guard settings.calendarEnabled, store.access == .granted else {
             cancelEventEditing()
-            report("Turn Calendar on in Settings first")
+            report(String(localized: "Turn Calendar on in Settings first"))
             return
         }
         guard store.createEvent(editor.draft, now: Date()) else {
             Task {
                 _ = await core.reportFailure(
-                    title: "Couldn't create the event",
-                    message: "No calendar on this Mac accepts new events.",
+                    title: String(localized: "Couldn't create the event"),
+                    message: String(localized: "No calendar on this Mac accepts new events."),
                     symbol: "calendar.badge.exclamationmark", recovery: nil)
             }
             return
         }
         cancelEventEditing()
-        core.showMessage("Event created")
+        core.showMessage(String(localized: "Event created"))
     }
 
     func cancelEventEditing() {
@@ -317,7 +316,7 @@ final class CalendarCoordinator {
 
     func openNextMeetingInCalendar() {
         guard let meeting = window.joinable(from: store.events, now: Date()) ?? agenda.first else {
-            report("Nothing scheduled \(settings.calendarSpan.orPhrase)")
+            report(settings.calendarSpan.emptyScheduleMessage)
             return
         }
         openInCalendar(meeting)
@@ -362,29 +361,29 @@ final class CalendarCoordinator {
             NSApp.activate(ignoringOtherApps: true)
             guard
                 await core.confirm(
-                    title: "Join \(meeting.title)?",
+                    title: String(localized: "Join \(meeting.title)?"),
                     message: UpcomingWindow.countdown(to: meeting.start, now: Date()),
-                    symbol: link.provider.sfSymbol, confirmTitle: "Join", tone: .neutral,
-                    confirmRole: .standard, dismissTitle: "Not Now")
+                    symbol: link.provider.sfSymbol, confirmTitle: String(localized: "Join"), tone: .neutral,
+                    confirmRole: .standard, dismissTitle: String(localized: "Not Now"))
             else { return }
         }
         if await MeetingLauncher.join(link, browserBundleID: settings.meetingBrowserBundleID) {
             return
         }
         _ = await core.reportFailure(
-            title: "Couldn't open the meeting link",
-            message: "Nothing on this Mac would open \(link.url.absoluteString).",
+            title: String(localized: "Couldn't open the meeting link"),
+            message: String(localized: "Nothing on this Mac would open \(link.url.absoluteString)."),
             symbol: "video.slash", recovery: nil)
     }
 
     func copyLink(_ meeting: MeetingEvent) {
         guard let link = meeting.link else {
-            report("This meeting has no link")
+            report(String(localized: "This meeting has no link"))
             return
         }
         paletteCoordinator.hidePalette(restoreFocus: false)
         Paster.copyPlainText(link.url.absoluteString)
-        core.showMessage("Meeting link copied")
+        core.showMessage(String(localized: "Meeting link copied"))
     }
 
     func openInCalendar(_ meeting: MeetingEvent) {

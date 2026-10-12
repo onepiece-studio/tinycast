@@ -43,7 +43,10 @@ struct ExtensionPickerField: View {
 
     /// What the control does, then whatever the extension explains about the field.
     private var hint: String {
-        let state = open ? "Showing choices" : "Opens a list of choices"
+        let state =
+            open
+            ? String(localized: "Showing choices", table: "Extensions")
+            : String(localized: "Opens a list of choices", table: "Extensions")
         let parts = [error, info].compactMap { $0 }.filter { !$0.isEmpty }
         return ([state] + parts).joined(separator: ". ")
     }
@@ -151,11 +154,12 @@ struct ExtensionPickerField: View {
                         .foregroundStyle(Theme.Colors.textSecondary)
                         .lineLimit(1)
                         .layoutPriority(-1)
-                    Text("·")
+                    Text(String(localized: "·", table: "Extensions"))
                         .font(metrics.typography.rowTitle)
                         .foregroundStyle(Theme.Colors.textTertiary)
                 }
-                ExtensionQueryText(query: query, prompt: "Search…", phase: typedAt)
+                ExtensionQueryText(
+                    query: query, prompt: String(localized: "Search…", table: "Extensions"), phase: typedAt)
             } else {
                 Text(label)
                     .font(metrics.typography.rowTitle)

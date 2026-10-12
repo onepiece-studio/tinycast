@@ -16,22 +16,25 @@ struct EventEditorView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: metrics.spacing.xxl) {
-                FormRow("Title") {
+                FormRow(String(localized: "Title")) {
                     FormTextInput(
-                        text: $editor.draft.title, focused: titleFocused, placeholder: "Event title",
-                        label: "Event title", moveFocus: editor.advanceFocus
+                        text: $editor.draft.title, focused: titleFocused,
+                        placeholder: String(localized: "Event title"),
+                        label: String(localized: "Event title"), moveFocus: editor.advanceFocus
                     )
                     .frame(height: metrics.size.dialogButtonHeight)
                     .formFieldChrome(focused: focusedField == .title)
                 }
-                FormRow("Start") {
+                FormRow(String(localized: "Start")) {
                     choice(
-                        "Start", field: .start, selection: $editor.draft.startOffsetMinutes,
+                        String(localized: "Start"), field: .start,
+                        selection: $editor.draft.startOffsetMinutes,
                         values: EventDraft.startOffsets, label: EventDraft.label(startOffset:))
                 }
-                FormRow("Duration") {
+                FormRow(String(localized: "Duration")) {
                     choice(
-                        "Duration", field: .duration, selection: $editor.draft.durationMinutes,
+                        String(localized: "Duration"), field: .duration,
+                        selection: $editor.draft.durationMinutes,
                         values: EventDraft.durations, label: EventDraft.label(duration:))
                 }
                 FormRow("") {

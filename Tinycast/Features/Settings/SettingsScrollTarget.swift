@@ -56,16 +56,14 @@ extension SettingsSectionHeader where Label == Text {
 /// One setting's own name, in place of the `Text` a row's label would otherwise hold. This is what
 /// a row-level search result scrolls to and lights up.
 struct SettingsRowTitle: View {
-    let anchor: SettingsAnchor
-    let title: String
+    let row: SettingsRowID
 
-    init(_ anchor: SettingsAnchor, _ title: String) {
-        self.anchor = anchor
-        self.title = title
+    init(_ row: SettingsRowID) {
+        self.row = row
     }
 
     var body: some View {
-        Text(title).modifier(SearchPill(target: .row(anchor, title)))
+        Text(row.title).modifier(SearchPill(target: .row(row)))
     }
 }
 

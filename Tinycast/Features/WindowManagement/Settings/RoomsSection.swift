@@ -10,7 +10,7 @@ struct RoomsSection: View {
         @Bindable var settings = settings
         return Section {
             Toggle(isOn: $settings.windowRoomsShowInLauncher) {
-                SettingsRowTitle(.windowManagementRooms, "Show rooms in launcher")
+                SettingsRowTitle(.windowManagementRoomsShowRoomsInLauncher)
             }
 
             if store.rooms.isEmpty {
@@ -25,7 +25,7 @@ struct RoomsSection: View {
             Button {
                 coordinator.createRoom()
             } label: {
-                SettingsRowTitle(.windowManagementRooms, "New Room")
+                SettingsRowTitle(.windowManagementRoomsNewRoom)
             }
         } header: {
             SettingsSectionHeader(.windowManagementRooms)
@@ -42,7 +42,7 @@ private struct RoomSettingsRow: View {
     @Environment(VisibilityStore.self) private var visibility
 
     private var subtitle: String {
-        "\(room.summary) · \(coordinator.layout(of: room).title)"
+        String(localized: "\(room.summary) · \(coordinator.layout(of: room).title)")
     }
 
     var body: some View {

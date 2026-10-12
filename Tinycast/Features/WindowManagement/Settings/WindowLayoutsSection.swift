@@ -17,11 +17,11 @@ struct WindowLayoutsSection: View {
         @Bindable var settings = settings
         return Section {
             Toggle(isOn: $settings.windowLayoutsShowInLauncher) {
-                SettingsRowTitle(.windowManagementLayouts, "Show layouts in launcher")
+                SettingsRowTitle(.windowManagementLayoutsShowLayoutsInLauncher)
             }
 
             if store.layouts.count > Self.filterThreshold {
-                SettingsFilterField(prompt: "Search layouts…", query: $query)
+                SettingsFilterField(prompt: String(localized: "Search layouts…"), query: $query)
             }
 
             if results.isEmpty {
@@ -40,12 +40,12 @@ struct WindowLayoutsSection: View {
             Button {
                 onEdit(nil)
             } label: {
-                SettingsRowTitle(.windowManagementLayouts, "New Layout")
+                SettingsRowTitle(.windowManagementLayoutsNewLayout)
             }
             Button {
                 core.windowLayoutCoordinator.captureWindowLayout()
             } label: {
-                SettingsRowTitle(.windowManagementLayouts, "Create Layout from Current Windows")
+                SettingsRowTitle(.windowManagementLayoutsCreateLayoutFromCurrentWindows)
             }
         } header: {
             SettingsSectionHeader(.windowManagementLayouts)
@@ -59,8 +59,8 @@ struct WindowLayoutsSection: View {
 
     private var emptyMessage: String {
         store.layouts.isEmpty
-            ? "Save an arrangement, then restore it with one shortcut."
-            : "No layout matches “\(query)”."
+            ? String(localized: "Save an arrangement, then restore it with one shortcut.")
+            : String(localized: "No layout matches “\(query)”.")
     }
 }
 

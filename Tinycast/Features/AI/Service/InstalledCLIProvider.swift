@@ -98,7 +98,8 @@ private final class InstalledCLITurnRunner {
     ) async {
         guard kind != .codex else {
             continuation.finish(
-                throwing: AIProviderError.unavailable("Codex requires its app-server adapter."))
+                throwing: AIProviderError.unavailable(
+                    String(localized: "Codex requires its app-server adapter.")))
             return
         }
         guard
@@ -109,7 +110,7 @@ private final class InstalledCLITurnRunner {
             })
         else {
             continuation.finish(
-                throwing: AIProviderError.unavailable("There is no user message to send."))
+                throwing: AIProviderError.unavailable(String(localized: "There is no user message to send.")))
             return
         }
         let resolvedExecutable: URL?
@@ -147,7 +148,7 @@ private final class InstalledCLITurnRunner {
         } catch {
             continuation.finish(
                 throwing: AIProviderError.unavailable(
-                    "Tinycast could not prepare its private AI workspace."))
+                    String(localized: "Tinycast could not prepare its private AI workspace.")))
             return
         }
 
@@ -164,7 +165,7 @@ private final class InstalledCLITurnRunner {
                 activeServers = []
                 continuation.finish(
                     throwing: AIProviderError.unavailable(
-                        "Tinycast could not write its private MCP configuration."))
+                        String(localized: "Tinycast could not write its private MCP configuration.")))
                 return
             }
             configURL = url
@@ -186,7 +187,7 @@ private final class InstalledCLITurnRunner {
                 try? FileManager.default.removeItem(at: url)
                 continuation.finish(
                     throwing: AIProviderError.unavailable(
-                        "Tinycast could not write its private AI prompt."))
+                        String(localized: "Tinycast could not write its private AI prompt.")))
                 return
             }
             grokPrompt = url
@@ -461,7 +462,7 @@ private final class InstalledCLITurnRunner {
                 guard
                     let line = ClaudeControlProtocol.response(
                         to: request, allowed: allowed,
-                        message: "The user declined this tool call.")
+                        message: String(localized: "The user declined this tool call."))
                 else { return }
                 self.write(line, closing: false)
             })

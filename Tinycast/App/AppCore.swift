@@ -95,10 +95,13 @@ final class AppCore {
         audioDucker: dictationAudioDucker,
         confirmEnable: { [unowned self] in
             await self.confirm(
-                title: "Enable Dictation?",
-                message: "Tinycast needs microphone access for dictation and Accessibility to paste into "
-                    + "other apps. Audio is processed on this Mac.",
-                symbol: "waveform", confirmTitle: "Continue", tone: .neutral,
+                title: String(localized: "Enable Dictation?"),
+                message: String(
+                    localized: """
+                        Tinycast needs microphone access for dictation and Accessibility to paste into \
+                        other apps. Audio is processed on this Mac.
+                        """),
+                symbol: "waveform", confirmTitle: String(localized: "Continue"), tone: .neutral,
                 confirmRole: .standard)
         },
         showMessage: { [unowned self] in self.showMessage($0, tone: $1) })
@@ -279,7 +282,7 @@ final class AppCore {
             applyAppearance()
             observeEffectiveAppearance()
             pinnedEmoji.onPersistenceFailure = { [weak self] in
-                self?.showMessage("Couldn't save Emoji & Symbols pins", tone: .danger)
+                self?.showMessage(String(localized: "Couldn't save Emoji & Symbols pins"), tone: .danger)
             }
 
             appIndex.start(settings: settings)
@@ -530,7 +533,8 @@ final class AppCore {
             return
         }
         guard clipboardStore.setTextSearchEnabled(true) else {
-            showMessage("Couldn't enable text recognition for clipboard history.", tone: .danger)
+            showMessage(
+                String(localized: "Couldn't enable text recognition for clipboard history."), tone: .danger)
             return
         }
         clipboardStore.setTextSearchActive(palette.isVisible)
@@ -607,7 +611,8 @@ final class AppCore {
             against: aiSettings.connections, fallback: aiSettings.defaultModel)
         guard let selection = quickActionSettings.model(for: action) ?? aiSettings.defaultModel
         else {
-            throw AIProviderError.unavailable("Choose a model in Settings \u{2192} Quick Actions.")
+            throw AIProviderError.unavailable(
+                String(localized: "Choose a model in Settings \u{2192} Quick Actions."))
         }
         return try AIProviderFactory.make(
             selection: selection, settings: aiSettings, subscription: chatGPTSubscription,
@@ -876,7 +881,7 @@ final class AppCore {
     func confirm(
         title: String, message: String?, symbol: String?, confirmTitle: String,
         tone: DialogTone = .danger, confirmRole: DialogAction.Role = .destructive,
-        dismissTitle: String = "Cancel"
+        dismissTitle: String = String(localized: "Cancel")
     ) async -> Bool {
         await dialogs.confirm(
             title: title, message: message, symbol: symbol, tone: tone, confirmTitle: confirmTitle,

@@ -13,21 +13,6 @@ enum HyperKeyPhysicalKey: String, CaseIterable, Identifiable, Sendable {
     /// The single glyph Hyper shortcuts collapse to.
     static let hyperGlyph = "✦"
 
-    var title: String {
-        switch self {
-        case .none: return "None"
-        case .capsLock: return "Caps Lock (⇪)"
-        case .leftControl: return "Left Control (⌃)"
-        case .leftShift: return "Left Shift (⇧)"
-        case .leftOption: return "Left Option (⌥)"
-        case .leftCommand: return "Left Command (⌘)"
-        case .rightControl: return "Right Control (⌃)"
-        case .rightShift: return "Right Shift (⇧)"
-        case .rightOption: return "Right Option (⌥)"
-        case .rightCommand: return "Right Command (⌘)"
-        }
-    }
-
     /// Virtual key code of the physical key, `nil` only for `.none`.
     var keyCode: Int? {
         switch self {

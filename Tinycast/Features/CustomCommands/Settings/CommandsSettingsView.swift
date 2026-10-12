@@ -14,14 +14,17 @@ struct CommandsSettingsView: View {
             LauncherItemsSection(
                 kind: .command,
                 anchor: .commandsCommands,
-                searchPrompt: "Search commands…")
+                searchPrompt: String(localized: "Search commands…"))
 
             FeatureSwitchSection(
                 anchor: .commandsCustomCommands,
-                enableTitle: "Enable custom commands",
+                row: .commandsCustomCommandsEnableCustomCommands,
                 enableSubtitle:
-                    "Run as you in /bin/zsh, or the interpreter a #! line names. "
-                    + "Use full executable paths.",
+                    String(
+                        localized: """
+                            Run as you in /bin/zsh, or the interpreter a #! line names. \
+                            Use full executable paths.
+                            """),
                 isEnabled: $settings.customCommandsEnabled,
                 showsInLauncher: $settings.customCommandsShowInLauncher)
 
@@ -50,12 +53,12 @@ struct CommandsSettingsView: View {
                 Button {
                     coordinator.editCustomCommand(nil)
                 } label: {
-                    SettingsRowTitle(.commandsCustomCommands, "Add Custom Command")
+                    SettingsRowTitle(.commandsCustomCommandsAddCustomCommand)
                 }
                 Button {
                     Task { await coordinator.importScriptDirectory() }
                 } label: {
-                    SettingsRowTitle(.commandsCustomCommands, "Import Raycast Scripts")
+                    SettingsRowTitle(.commandsCustomCommandsImportRaycastScripts)
                 }
             } footer: {
                 Text("Import reads a folder of Raycast script commands.")

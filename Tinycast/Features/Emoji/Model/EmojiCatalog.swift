@@ -17,25 +17,6 @@ enum EmojiCategory: String, CaseIterable, Sendable {
     case cjk = "xj"
     case keysAndTechnical = "xk"
 
-    var title: String {
-        switch self {
-        case .smileysAndPeople: return "Smileys & People"
-        case .animalsAndNature: return "Animals & Nature"
-        case .foodAndDrink: return "Food & Drink"
-        case .activity: return "Activity"
-        case .travelAndPlaces: return "Travel & Places"
-        case .objects: return "Objects"
-        case .symbols: return "Symbols"
-        case .flags: return "Flags"
-        case .arrows: return "Arrows"
-        case .currency: return "Currency"
-        case .math: return "Math"
-        case .shapesAndPunctuation: return "Shapes & Punctuation"
-        case .cjk: return "CJK Symbols"
-        case .keysAndTechnical: return "Keys & Technical"
-        }
-    }
-
     var systemImage: String {
         switch self {
         case .smileysAndPeople: "face.smiling"
@@ -77,15 +58,6 @@ enum EmojiCategoryFilter: Hashable, Sendable {
     static let allCases: [Self] =
         [.all, .pinned, .frequentlyUsed] + EmojiCategory.allCases.map(Self.category)
 
-    var title: String {
-        switch self {
-        case .all: "All Categories"
-        case .pinned: "Pinned"
-        case .frequentlyUsed: "Frequently Used"
-        case .category(let category): category.title
-        }
-    }
-
     var systemImage: String {
         switch self {
         case .all: "square.grid.3x3.square"
@@ -114,7 +86,6 @@ enum EmojiGridColumns: Int, CaseIterable, Identifiable, Sendable {
     static let `default`: Self = .eight
 
     var id: Int { rawValue }
-    var title: String { "\(rawValue) columns" }
 
     /// Nil when the zoom would change nothing: already at the default, or at six or ten columns.
     func applying(_ zoom: EmojiGridZoom, default defaultColumns: Self) -> Self? {
@@ -142,17 +113,6 @@ enum EmojiSkinTone: String, CaseIterable, Identifiable, Sendable {
         case .medium: return Unicode.Scalar(0x1F3FD)
         case .mediumDark: return Unicode.Scalar(0x1F3FE)
         case .dark: return Unicode.Scalar(0x1F3FF)
-        }
-    }
-
-    var title: String {
-        switch self {
-        case .none: return "Default"
-        case .light: return "Light"
-        case .mediumLight: return "Medium Light"
-        case .medium: return "Medium"
-        case .mediumDark: return "Medium Dark"
-        case .dark: return "Dark"
         }
     }
 

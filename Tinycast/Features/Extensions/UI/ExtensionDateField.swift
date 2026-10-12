@@ -26,7 +26,7 @@ struct ExtensionDateField: View {
     private var isFocused: Bool { focus == index }
 
     private var label: String {
-        guard let value else { return "No Date" }
+        guard let value else { return String(localized: "No Date", table: "Extensions") }
         return ExtensionDateExpression.detail(
             for: value, calendar: .current, includesTime: includesTime)
     }
@@ -111,7 +111,9 @@ struct ExtensionDateField: View {
                 .foregroundStyle(Theme.Colors.textSecondary)
             // While the list is open the control is the expression field, caret and all.
             if open {
-                ExtensionQueryText(query: query, prompt: "tomorrow at 10am", phase: typedAt)
+                ExtensionQueryText(
+                    query: query, prompt: String(localized: "tomorrow at 10am", table: "Extensions"),
+                    phase: typedAt)
             } else {
                 Text(label)
                     .font(metrics.typography.rowTitle)
@@ -126,7 +128,7 @@ struct ExtensionDateField: View {
         .extensionFieldChrome(focused: isFocused, open: open)
         .contentShape(Rectangle())
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(Text(node.string("title") ?? "Date"))
+        .accessibilityLabel(Text(node.string("title") ?? String(localized: "Date", table: "Extensions")))
         // While open the control is an expression field, so it announces what is typed.
         .accessibilityValue(Text(open && !query.isEmpty ? query : label))
         .accessibilityHint(Text(hint))

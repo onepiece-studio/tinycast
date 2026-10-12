@@ -55,7 +55,7 @@ struct CalcPerformance {
             let fields = [result.expression, result.sourceBadge ?? "", result.targetBadge ?? ""]
             switch result.payload {
             case .value(let display, let copy): return fields + [display, copy]
-            case .error(let message): return fields + ["error", message]
+            case .error(let message): return fields + ["error", String(localized: message)]
             }
         }
         let arguments = Array(CommandLine.arguments.dropFirst())
@@ -92,7 +92,7 @@ struct CalcPerformance {
                     if let answer = evaluate(query) {
                         switch answer.payload {
                         case .value(_, let copy): checksum &+= copy.utf8.count
-                        case .error(let message): checksum &+= message.utf8.count
+                        case .error(let message): checksum &+= String(localized: message).utf8.count
                         }
                     }
                 }

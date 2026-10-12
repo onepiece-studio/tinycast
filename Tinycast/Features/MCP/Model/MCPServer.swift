@@ -23,14 +23,6 @@ enum MCPTrust: String, CaseIterable, Codable, Identifiable, Sendable {
     case never
 
     var id: String { rawValue }
-
-    var title: String {
-        switch self {
-        case .ask: return "Ask Each Chat"
-        case .always: return "Always Allow"
-        case .never: return "Never Allow"
-        }
-    }
 }
 
 struct MCPServer: Codable, Equatable, Identifiable, Sendable {

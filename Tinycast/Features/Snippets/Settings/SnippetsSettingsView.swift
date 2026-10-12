@@ -11,8 +11,8 @@ struct SnippetsSettingsView: View {
         return Form {
             FeatureSwitchSection(
                 anchor: .snippetsSnippets,
-                enableTitle: "Enable snippets",
-                enableSubtitle: "Expand templates from the launcher or by keyword.",
+                row: .snippetsSnippetsEnableSnippets,
+                enableSubtitle: String(localized: "Expand templates from the launcher or by keyword."),
                 // Enabling is also keyword-expansion consent, so it uses the confirming setter.
                 isEnabled: Binding(
                     get: { settings.snippetsEnabled },
@@ -55,8 +55,11 @@ struct SnippetsSettingsView: View {
     private var library: some View {
         Section {
             if sortedSnippets.isEmpty {
-                Text(snippetsStore.state == .loading ? "Loading snippets…" : "No snippets yet.")
-                    .foregroundStyle(.secondary)
+                Text(
+                    snippetsStore.state == .loading
+                        ? String(localized: "Loading snippets…") : String(localized: "No snippets yet.")
+                )
+                .foregroundStyle(.secondary)
             } else {
                 ForEach(sortedSnippets) { record in
                     SnippetSettingsRow(
@@ -69,7 +72,7 @@ struct SnippetsSettingsView: View {
             LabeledContent {
                 Button("Add…") { coordinator.editSnippet(nil) }
             } label: {
-                SettingsRowTitle(.snippetsLibrary, "New Snippet")
+                SettingsRowTitle(.snippetsLibraryNewSnippet)
             }
 
             LabeledContent {
@@ -80,7 +83,7 @@ struct SnippetsSettingsView: View {
                 Button("Open Folder", action: coordinator.revealSnippetsInFinder)
                     .accessibilityHint("Reveals the snippets folder in Finder.")
             } label: {
-                SettingsRowTitle(.snippetsLibrary, "Snippets Folder")
+                SettingsRowTitle(.snippetsLibrarySnippetsFolder)
                 Text((snippetsStore.snippetsDirectory.path as NSString).abbreviatingWithTildeInPath)
             }
         } header: {
@@ -92,19 +95,19 @@ struct SnippetsSettingsView: View {
     private var libraryNotices: some View {
         if case .failed(let message) = snippetsStore.state {
             noticeSection(
-                "Couldn’t load the snippet library", message, tint: .orange,
-                retryHint: "Tries to load the snippet library again.")
+                String(localized: "Couldn’t load the snippet library"), message, tint: .orange,
+                retryHint: String(localized: "Tries to load the snippet library again."))
         }
 
         if !snippetsStore.issues.isEmpty {
             noticeSection(
                 snippetIssueTitle, snippetIssueMessage, tint: .orange,
-                retryHint: "Reloads snippet files after you fix them on disk.")
+                retryHint: String(localized: "Reloads snippet files after you fix them on disk."))
         }
 
         if let operationError = snippetsStore.operationError {
             noticeSection(
-                "The snippet operation failed", operationError, tint: .red, retryHint: nil)
+                String(localized: "The snippet operation failed"), operationError, tint: .red, retryHint: nil)
         }
     }
 
@@ -134,8 +137,7 @@ struct SnippetsSettingsView: View {
 
     private var snippetIssueTitle: String {
         let count = snippetsStore.issues.count
-        return count == 1
-            ? "1 snippet file couldn’t be loaded" : "\(count) snippet files couldn’t be loaded"
+        return String(localized: "\(count) snippet files couldn’t be loaded")
     }
 
     private var snippetIssueMessage: String {
@@ -144,7 +146,10 @@ struct SnippetsSettingsView: View {
             return "\(first.fileURL.lastPathComponent): \(first.message)"
         }
         return
-            "\(first.fileURL.lastPathComponent): \(first.message) Plus \(snippetsStore.issues.count - 1) more."
+            String(
+                localized:
+                    "\(first.fileURL.lastPathComponent): \(first.message) Plus \(snippetsStore.issues.count - 1) more."
+            )
     }
 }
 

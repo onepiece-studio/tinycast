@@ -27,7 +27,7 @@ struct ExtensionDetailBody: View {
         ScrollView {
             VStack(alignment: .leading, spacing: metrics.spacing.md) {
                 if isLoading && (markdown ?? "").isEmpty {
-                    Text("Loading…").foregroundStyle(.secondary)
+                    Text(String(localized: "Loading…", table: "Extensions")).foregroundStyle(.secondary)
                 }
                 if let markdown, !markdown.isEmpty {
                     ExtensionMarkdownView(markdown: markdown)
@@ -275,7 +275,7 @@ struct ExtensionMarkdownView: View {
                         .textSelection(.enabled)
                 case .bullet(let text):
                     HStack(alignment: .top, spacing: metrics.spacing.sm) {
-                        Text("•").foregroundStyle(.secondary)
+                        Text(String(localized: "•", table: "Extensions")).foregroundStyle(.secondary)
                         Text(inline(text)).font(metrics.typography.rowTitle)
                     }
                 case .numbered(let index, let text):

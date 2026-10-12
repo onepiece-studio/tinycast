@@ -48,14 +48,6 @@ enum ChatGPTSubscription {
     struct Effort: Equatable, Identifiable, Sendable {
         let id: String
         let detail: String?
-
-        var title: String {
-            switch id {
-            case "xhigh": return "Extra high"
-            case "minimal": return "Minimal"
-            default: return id.prefix(1).uppercased() + id.dropFirst()
-            }
-        }
     }
 
     struct Model: Equatable, Identifiable, Sendable {

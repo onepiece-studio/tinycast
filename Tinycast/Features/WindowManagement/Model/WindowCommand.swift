@@ -61,19 +61,6 @@ struct WindowCommand: Identifiable, Hashable, Sendable {
         case moving
         case fullscreen
         case spaces
-
-        var title: String {
-            switch self {
-            case .halves: return "Halves"
-            case .quarters: return "Quarters"
-            case .fourths: return "Fourths"
-            case .thirds: return "Thirds"
-            case .sizing: return "Sizing"
-            case .moving: return "Moving"
-            case .fullscreen: return "Fullscreen"
-            case .spaces: return "Spaces"
-            }
-        }
     }
 
     let id: ID

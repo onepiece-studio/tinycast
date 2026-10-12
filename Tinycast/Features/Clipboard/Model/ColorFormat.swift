@@ -9,18 +9,6 @@ enum ColorFormat: CaseIterable, Hashable, Sendable {
     case hslWithAlpha
     case oklch
 
-    /// The menu row's label; the rendered value is its trailing text.
-    var title: String {
-        switch self {
-        case .hex: return "Hex"
-        case .hexWithAlpha: return "Hex with Alpha"
-        case .rgba: return "RGBA"
-        case .hsl: return "HSL"
-        case .hslWithAlpha: return "HSL with Alpha"
-        case .oklch: return "Oklch"
-        }
-    }
-
     /// What the colour reads as in this notation.
     func string(for color: ColorValue) -> String {
         switch self {

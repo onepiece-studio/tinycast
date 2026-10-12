@@ -45,15 +45,19 @@ struct ExtensionPickerList: View {
     @ViewBuilder
     private var list: some View {
         if items.isEmpty {
-            Text(searchPlaceholder == nil ? "No matches" : "No Results")
-                .font(metrics.typography.menuRow)
-                .foregroundStyle(.secondary)
-                .frame(maxWidth: .infinity)
-                .frame(
-                    height: form.popoverRowHeight,
-                    alignment: searchPlaceholder == nil ? .leading : .center
-                )
-                .padding(searchPlaceholder == nil ? 0 : menuListInset)
+            Text(
+                searchPlaceholder == nil
+                    ? String(localized: "No matches", table: "Extensions")
+                    : String(localized: "No Results", table: "Extensions")
+            )
+            .font(metrics.typography.menuRow)
+            .foregroundStyle(.secondary)
+            .frame(maxWidth: .infinity)
+            .frame(
+                height: form.popoverRowHeight,
+                alignment: searchPlaceholder == nil ? .leading : .center
+            )
+            .padding(searchPlaceholder == nil ? 0 : menuListInset)
         } else {
             ScrollViewReader { proxy in
                 ScrollView {

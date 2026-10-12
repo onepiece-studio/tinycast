@@ -157,15 +157,8 @@ enum AIStreamEvent: Equatable, Sendable {
     case finished
 }
 
-enum AIProviderError: LocalizedError, Equatable, Sendable {
+enum AIProviderError: Error, Equatable, Sendable {
     case unavailable(String)
     case responseFailed(String)
     case malformedResponse
-
-    var errorDescription: String? {
-        switch self {
-        case .unavailable(let message), .responseFailed(let message): return message
-        case .malformedResponse: return "The provider returned malformed streaming data."
-        }
-    }
 }

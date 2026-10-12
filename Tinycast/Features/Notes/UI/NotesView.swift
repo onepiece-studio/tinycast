@@ -91,7 +91,7 @@ struct NotesView: View {
             Text("No Notes")
                 .font(Theme.Typography.rowTitle)
                 .foregroundStyle(Theme.Colors.textSecondary)
-            Button("Create Note", action: notes.createNote)
+            Button(String(localized: "Create Note"), action: notes.createNote)
                 .buttonStyle(.plain)
                 .font(Theme.Typography.bar)
                 .padding(.horizontal, Theme.Spacing.xl)
@@ -147,9 +147,15 @@ private struct NoteTitlebarActions: View {
 
     var body: some View {
         HStack(spacing: Theme.Spacing.xxs) {
-            action("plus", "Create Note", "Create Note  ⌘N", notes.createNote)
-            action("rectangle.stack", "Browse Notes", "Browse Notes  ⌘P", notes.searchNotes)
-            action("folder", "Open Notes Folder", "Open Notes Folder  ⌘O", notes.openNotesFolder)
+            action(
+                "plus", String(localized: "Create Note"), String(localized: "Create Note  ⌘N"),
+                notes.createNote)
+            action(
+                "rectangle.stack", String(localized: "Browse Notes"), String(localized: "Browse Notes  ⌘P"),
+                notes.searchNotes)
+            action(
+                "folder", String(localized: "Open Notes Folder"), String(localized: "Open Notes Folder  ⌘O"),
+                notes.openNotesFolder)
         }
         .padding(Theme.Spacing.xs)
         .frosted(in: Capsule())

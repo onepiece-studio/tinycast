@@ -5,6 +5,16 @@ struct LauncherCategorySwitchSection: View {
     let kind: AppEntry.Kind
     let anchor: SettingsAnchor
 
+    private var enableRow: SettingsRowID {
+        switch kind {
+        case .application: .applicationsApplicationsEnableApplications
+        case .systemSettings: .systemSettingsSystemSettingsEnableSystemSettings
+        case .systemAction: .systemActionsSystemActionsEnableSystemActions
+        case .appleShortcut: .appleShortcutsAppleShortcutsEnableAppleShortcuts
+        default: .commandsCommandsEnableCommands
+        }
+    }
+
     @Environment(VisibilityStore.self) private var visibility
 
     var body: some View {
@@ -16,8 +26,8 @@ struct LauncherCategorySwitchSection: View {
                 )
             ) {
                 SettingsFeatureToggleLabel(
-                    anchor: anchor, title: "Enable \(anchor.title)",
-                    subtitle: "Off hides all of them and stops their shortcuts.")
+                    row: enableRow,
+                    subtitle: String(localized: "Off hides all of them and stops their shortcuts."))
             }
         }
     }
@@ -66,9 +76,12 @@ struct LauncherItemsList: View {
 
     var body: some View {
         if entries.isEmpty {
-            Text(query.isEmpty ? "Nothing here yet." : "No matches for “\(query)”.")
-                .foregroundStyle(.secondary)
-                .frame(maxWidth: .infinity, alignment: .center)
+            Text(
+                query.isEmpty
+                    ? String(localized: "Nothing here yet.") : String(localized: "No matches for “\(query)”.")
+            )
+            .foregroundStyle(.secondary)
+            .frame(maxWidth: .infinity, alignment: .center)
         } else if entries.first?.kind != .application && entries.first?.kind != .appleShortcut {
             ForEach(entries) { entry in LauncherItemRow(entry: entry) }
         } else {

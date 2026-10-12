@@ -1,5 +1,6 @@
 name: Tinycast
 options:
+  developmentLanguage: en
   bundleIdPrefix: com.tinycast
   deploymentTarget:
     macOS: "26.0"
@@ -72,6 +73,7 @@ targets:
           subpath: Contents/Helpers
     settings:
       base:
+        SWIFT_EMIT_LOC_STRINGS: YES
         PRODUCT_BUNDLE_IDENTIFIER: "$(TINYCAST_BUNDLE_IDENTIFIER)"
         INFOPLIST_FILE: Tinycast/Info.plist
         CODE_SIGN_ENTITLEMENTS: Tinycast/Tinycast.entitlements

@@ -102,7 +102,10 @@ struct ExtensionStoreClient: Sendable {
             // Anonymous, so a private repository answers exactly like a missing one.
             if isGitHubAPI, http.statusCode == 404 {
                 throw ExtensionStoreError.rejected(
-                    "That repository or branch wasn't found. A private repository can't be read.")
+                    String(
+                        localized:
+                            "That repository or branch wasn't found. A private repository can't be read.",
+                        table: "Extensions"))
             }
             // GitHub explains a rate limit in the body; surfacing that beats a bare "403".
             struct Message: Decodable { let message: String }

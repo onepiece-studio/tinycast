@@ -12,16 +12,4 @@ enum RoomLayoutKind: String, Codable, CaseIterable, Sendable {
     case custom
     /// Exactly where the windows were when the arrangement was remembered.
     case saved
-
-    var title: String {
-        switch self {
-        case .auto: "Auto"
-        case .focus: "Focus"
-        case .stack: "Stack"
-        case .columns: "Columns"
-        case .grid: "Grid"
-        case .custom: "Custom"
-        case .saved: "As Arranged"
-        }
-    }
 }

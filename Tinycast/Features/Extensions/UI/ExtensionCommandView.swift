@@ -21,11 +21,11 @@ struct ExtensionCommandView: View {
     private var content: some View {
         switch state {
         case .launching where screen.root == nil:
-            EmptyResults(text: "Starting…")
+            EmptyResults(text: String(localized: "Starting…", table: "Extensions"))
         case .failed(let message):
             ExtensionFailureView(message: message)
         case .finished:
-            EmptyResults(text: "Done")
+            EmptyResults(text: String(localized: "Done", table: "Extensions"))
         default:
             switch screen.kind {
             case .list, .grid:
@@ -46,11 +46,14 @@ struct ExtensionCommandView: View {
             case .unsupported(let type):
                 if type.isEmpty {
                     // A commit rendered null; "Starting…" here would look like a hang.
-                    EmptyResults(text: "Nothing to show")
+                    EmptyResults(text: String(localized: "Nothing to show", table: "Extensions"))
                 } else {
                     ExtensionFailureView(
                         message:
-                            "This command renders \(type), which Tinycast doesn't support yet. See docs/extensions.md."
+                            String(
+                                localized:
+                                    "This command renders \(type), which Tinycast doesn't support yet. See docs/extensions.md.",
+                                table: "Extensions")
                     )
                 }
             }
@@ -134,8 +137,11 @@ struct ExtensionToastPill: View {
                     } label: {
                         // The wider word holds the width, so the pill never twitches on copy.
                         ZStack {
-                            Text("Copied").hidden()
-                            Text(copiedAt == nil ? "Copy" : "Copied")
+                            Text(String(localized: "Copied", table: "Extensions")).hidden()
+                            Text(
+                                copiedAt == nil
+                                    ? String(localized: "Copy", table: "Extensions")
+                                    : String(localized: "Copied", table: "Extensions"))
                         }
                     }
                 } else if let action = toast.primaryAction {
@@ -166,7 +172,7 @@ struct ExtensionToastPill: View {
         .onHover { isHovered in
             withAnimation(.easeOut(duration: Theme.Duration.hover)) { hovered = isHovered }
         }
-        .accessibilityAction(named: "Dismiss", onDismiss)
+        .accessibilityAction(named: String(localized: "Dismiss", table: "Extensions"), onDismiss)
         .task(id: copiedAt) {
             guard copiedAt != nil else { return }
             try? await Task.sleep(for: .seconds(Theme.Duration.copyFeedback))

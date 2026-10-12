@@ -29,7 +29,8 @@ enum SettingsFileSchema {
 
         switch key {
         case .launcherShortcut:
-            return shortcuts.binding(for: key, action: .togglePalette, name: "App Launcher")
+            return shortcuts.binding(
+                for: key, action: .togglePalette, name: String(localized: "App Launcher"))
         case .showInMenuBar: return bind(settings, \.showInMenuBar)
         case .automaticallyCheckForUpdates: return bind(settings, \.automaticallyCheckForUpdates)
         case .popToRootTimeout: return bind(settings, \.popToRootTimeout)
@@ -90,7 +91,7 @@ enum SettingsFileSchema {
         case .notesCommands: return launcher.commandsBinding(for: key, owner: .notes)
         case .dictationMode: return bind(settings, \.dictationMode)
         case .dictationShortcut:
-            return shortcuts.binding(for: key, action: .dictation, name: "Dictation")
+            return shortcuts.binding(for: key, action: .dictation, name: String(localized: "Dictation"))
         case .dictationModel: return bind(settings, \.dictationModel)
         case .dictationMicrophone: return bind(settings, \.dictationMicrophone)
         case .dictationDestination: return bind(settings, \.dictationDestination)

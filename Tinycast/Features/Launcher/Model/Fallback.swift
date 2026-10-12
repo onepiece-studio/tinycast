@@ -43,17 +43,6 @@ enum Fallback: Hashable, Sendable {
         }
     }
 
-    /// The footer pill's verb: what ↵ does, in the destination's own words.
-    var openVerb: String {
-        switch self {
-        case .builtin(.quickAI): return "Ask Quick AI"
-        case .builtin(.searchFiles): return "Search Files"
-        case .builtin(.runShellCommand): return "Run Shell Command"
-        case .builtin(.define): return "Define Word"
-        case .quicklink: return "Open Quicklink"
-        }
-    }
-
     /// Stored order first, then anything it has never seen — a quicklink added today lands last.
     static func ordered(_ available: [Fallback], by storedIDs: [String]) -> [Fallback] {
         var remaining = Dictionary(available.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })

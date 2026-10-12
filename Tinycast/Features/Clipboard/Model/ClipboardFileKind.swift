@@ -26,17 +26,6 @@ enum ClipboardFileKind: Sendable {
     /// Whether the preview pane plays it rather than drawing a still.
     var isPlayable: Bool { self == .movie || self == .audio }
 
-    var title: String {
-        switch self {
-        case .image: return "Image"
-        case .movie: return "Movie"
-        case .audio: return "Audio"
-        case .pdf: return "PDF"
-        case .folder: return "Folder"
-        case .other: return "File"
-        }
-    }
-
     var systemImage: String {
         switch self {
         case .image: return "photo"

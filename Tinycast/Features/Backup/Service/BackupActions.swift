@@ -105,12 +105,12 @@ enum BackupActions {
         do {
             let result = try await exportBackup(core: core, categories: BackupCategory.all)
             await present(
-                core: core, title: "Backup Exported", message: exportText(result),
+                core: core, title: String(localized: "Backup Exported"), message: exportText(result),
                 symbol: exportSymbol, tone: .success)
         } catch is CancellationError {
         } catch {
             await present(
-                core: core, title: "Export Failed", message: error.localizedDescription,
+                core: core, title: String(localized: "Export Failed"), message: error.localizedDescription,
                 symbol: exportSymbol)
         }
     }
@@ -124,11 +124,11 @@ enum BackupActions {
                 let summary = await applyBackup(manifest.categories, from: staging, to: core)
             else { return }
             await present(
-                core: core, title: "Backup Imported", message: summaryText(summary),
+                core: core, title: String(localized: "Backup Imported"), message: summaryText(summary),
                 symbol: importSymbol, tone: .success)
         } catch {
             await present(
-                core: core, title: "Import Failed", message: error.localizedDescription,
+                core: core, title: String(localized: "Import Failed"), message: error.localizedDescription,
                 symbol: importSymbol)
         }
     }
@@ -241,9 +241,9 @@ enum BackupActions {
         let categories = BackupCategory.ordered(result.manifest.categories)
         var text =
             categories.isEmpty
-            ? "Nothing was selected."
+            ? String(localized: "Nothing was selected.")
             : "Saved "
-                + categories.map(\.descriptor.label)
+                + categories.map(\.title)
                 .joined(separator: ", ") + "."
         if result.missingImages > 0 {
             text += " \(result.missingImages) images were unavailable and skipped."
@@ -251,14 +251,14 @@ enum BackupActions {
         return text
     }
 
-    static let nothingImportedText = "Nothing to import from this file."
+    static let nothingImportedText = String(localized: "Nothing to import from this file.")
 
     /// No import may grant keystroke listening, so say the switch an imported keyword needs is off.
     private static let snippetsNeedEnablingText =
-        "Turn on Snippets in Settings to use their keywords."
+        String(localized: "Turn on Snippets in Settings to use their keywords.")
 
     /// Not everything an import applies settles in the running app, so say to relaunch.
-    private static let restartAfterImportText = "Quit and reopen Tinycast to finish."
+    private static let restartAfterImportText = String(localized: "Quit and reopen Tinycast to finish.")
 
     /// One sentence per Raycast category that actually moved, shared by the pane and onboarding.
     static func raycastText(_ outcome: RaycastOutcome) -> String {
@@ -293,21 +293,21 @@ enum BackupActions {
     /// nil when no settings applied, so a caller can compose one combined sentence.
     static func appliedText(_ s: SettingsBackup.ApplySummary) -> String? {
         var parts: [String] = []
-        if s.settingsFields > 0 { parts.append("\(s.settingsFields) settings") }
-        if s.hotkeys > 0 { parts.append("\(s.hotkeys) shortcuts") }
-        if s.favorites > 0 { parts.append("\(s.favorites) favorites") }
-        if s.hiddenItems > 0 { parts.append("\(s.hiddenItems) hidden items") }
-        if s.aliases > 0 { parts.append("\(s.aliases) aliases") }
-        if s.pinnedEmoji > 0 { parts.append("\(s.pinnedEmoji) pinned emoji and symbols") }
-        if s.customCommands > 0 { parts.append("\(s.customCommands) custom commands") }
-        if s.quicklinks > 0 { parts.append("\(s.quicklinks) quicklinks") }
-        if s.windowLayouts > 0 { parts.append("\(s.windowLayouts) window layouts") }
-        if s.windowRooms > 0 { parts.append("\(s.windowRooms) rooms") }
+        if s.settingsFields > 0 { parts.append(String(localized: "\(s.settingsFields) settings")) }
+        if s.hotkeys > 0 { parts.append(String(localized: "\(s.hotkeys) shortcuts")) }
+        if s.favorites > 0 { parts.append(String(localized: "\(s.favorites) favorites")) }
+        if s.hiddenItems > 0 { parts.append(String(localized: "\(s.hiddenItems) hidden items")) }
+        if s.aliases > 0 { parts.append(String(localized: "\(s.aliases) aliases")) }
+        if s.pinnedEmoji > 0 { parts.append(String(localized: "\(s.pinnedEmoji) pinned emoji and symbols")) }
+        if s.customCommands > 0 { parts.append(String(localized: "\(s.customCommands) custom commands")) }
+        if s.quicklinks > 0 { parts.append(String(localized: "\(s.quicklinks) quicklinks")) }
+        if s.windowLayouts > 0 { parts.append(String(localized: "\(s.windowLayouts) window layouts")) }
+        if s.windowRooms > 0 { parts.append(String(localized: "\(s.windowRooms) rooms")) }
         if s.customWindowSizes > 0 {
-            parts.append("\(s.customWindowSizes) custom window sizes")
+            parts.append(String(localized: "\(s.customWindowSizes) custom window sizes"))
         }
         guard !parts.isEmpty else { return nil }
-        return "Applied " + parts.joined(separator: ", ") + "."
+        return String(localized: "Applied \(parts.formatted(.list(type: .and))).")
     }
 
     // MARK: - Settings file
@@ -324,15 +324,18 @@ enum BackupActions {
             return core.startSettingsFile(importing: false)
         }
         let choice = await core.choose(
-            title: "Import the existing settings file?",
+            title: String(localized: "Import the existing settings file?"),
             message:
-                "\(settingsFilePath) already exists. Import applies its settings here; Replace "
-                + "overwrites it with the current ones.",
+                String(
+                    localized: """
+                        \(settingsFilePath) already exists. Import applies its settings here; Replace \
+                        overwrites it with the current ones.
+                        """),
             symbol: importSymbol,
             options: [
-                DialogAction(title: "Import"),
-                DialogAction(title: "Replace", role: .destructive),
-                DialogAction(title: "Cancel", role: .cancel)
+                DialogAction(title: String(localized: "Import")),
+                DialogAction(title: String(localized: "Replace"), role: .destructive),
+                DialogAction(title: String(localized: "Cancel"), role: .cancel)
             ],
             defaultIndex: 0)
         switch choice {
@@ -352,16 +355,19 @@ enum BackupActions {
         -> Bool
     {
         guard commands > 0 || shortcuts > 0 else { return true }
-        let commandText = commands == 1 ? "1 custom command" : "\(commands) custom commands"
+        let commandText = String(localized: "\(commands) custom commands")
         let shortcutText =
-            shortcuts == 1 ? "1 global shortcut" : "\(shortcuts) global shortcuts"
+            String(localized: "\(shortcuts) global shortcuts")
         // Red glyph for a real warning, plain button: importing destroys nothing.
         return await core.confirm(
-            title: "Import executable commands?",
+            title: String(localized: "Import executable commands?"),
             message:
-                "This backup contains \(commandText) and \(shortcutText). Custom commands can run "
-                + "arbitrary shell code. Only import files you trust.",
-            symbol: importSymbol, confirmTitle: "Import", confirmRole: .standard)
+                String(
+                    localized: """
+                        This backup contains \(commandText) and \(shortcutText). Custom commands can run \
+                        arbitrary shell code. Only import files you trust.
+                        """),
+            symbol: importSymbol, confirmTitle: String(localized: "Import"), confirmRole: .standard)
     }
 
     private static func dateStamp() -> String {

@@ -1,15 +1,8 @@
 import Foundation
 
 struct SnippetMarkdownSerializer {
-    enum ParseError: Error, LocalizedError, Equatable {
+    enum ParseError: Error, Equatable {
         case invalidFrontmatter(fileURL: URL, line: Int, reason: String)
-
-        var errorDescription: String? {
-            switch self {
-            case .invalidFrontmatter(let fileURL, let line, let reason):
-                return "\(fileURL.path):\(line): \(reason)"
-            }
-        }
     }
 
     static func parse(content: String, fileURL: URL) throws -> Snippet {

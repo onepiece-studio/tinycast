@@ -35,28 +35,6 @@ enum UninstallProtection: String, Hashable, Sendable, CaseIterable {
     case missing
 
     var isRemovable: Bool { self == .removable }
-
-    /// Nil for exactly `.removable`; the row's lock icon keys off it.
-    var lockReason: String? {
-        switch self {
-        case .removable:
-            return nil
-        case .systemProtected:
-            return "Part of macOS and protected by the system."
-        case .userLocked:
-            return "Locked in Finder. Unlock it in Get Info, then try again."
-        case .notOwned:
-            return "Owned by another user, in a folder that only lets owners remove things."
-        case .needsFullDiskAccess:
-            return "Needs Full Disk Access, which Tinycast doesn’t request. "
-                + "Grant it in System Settings › Privacy & Security to include this item."
-        case .parentNotWritable:
-            return "Its enclosing folder isn’t writable by you, and Tinycast never asks for an "
-                + "administrator password."
-        case .missing:
-            return "No longer on disk."
-        }
-    }
 }
 
 enum UninstallProtectionRules {

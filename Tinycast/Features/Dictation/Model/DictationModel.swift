@@ -9,9 +9,6 @@ enum DictationModel: String, CaseIterable, Identifiable, Codable, Sendable {
     enum Family: String, CaseIterable, Identifiable {
         case parakeet = "Parakeet", qwen = "Qwen"
         var id: Self { self }
-        var summary: String {
-            self == .parakeet ? "Fast and memory-efficient" : "More languages, but slower"
-        }
     }
     case redux
     case ultra
@@ -19,22 +16,13 @@ enum DictationModel: String, CaseIterable, Identifiable, Codable, Sendable {
     case qwenLarge = "qwen-1.7b"
 
     var id: Self { self }
-    var title: String { "\(family.rawValue) · \(variantTitle)" }
+
     var variantTitle: String {
         switch self {
         case .ultra: "Ultra"
         case .redux: "Redux"
         case .qwenSmall: "0.6B"
         case .qwenLarge: "1.7B"
-        }
-    }
-
-    var summary: String {
-        switch self {
-        case .redux: "Lightweight and efficient."
-        case .ultra: "Higher accuracy, larger download."
-        case .qwenSmall: "Smaller and faster."
-        case .qwenLarge: "Higher accuracy, more memory."
         }
     }
 
@@ -52,12 +40,7 @@ enum DictationModel: String, CaseIterable, Identifiable, Codable, Sendable {
         case .qwenSmall, .qwenLarge: nil
         }
     }
-    var coverage: String {
-        switch self {
-        case .ultra, .redux: "25 languages"
-        case .qwenSmall, .qwenLarge: "30 languages and 22 Chinese dialects"
-        }
-    }
+
     var folderName: String { isQwen ? rawValue : "parakeet-\(rawValue)" }
     var approximateInstalledMegabytes: Int {
         switch self {

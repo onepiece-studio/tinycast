@@ -66,6 +66,10 @@ harnesses are not still running after everything else has finished.
 The script is the **only** place the harness set is written down. Nothing runs it for you, so run it
 before you open a PR. Adding a harness means adding one `run` line.
 
+`localization-test` compiles the catalogs into a temporary application and runs its Foundation-only
+harness in English, Simplified Chinese and an unsupported language. Model harnesses automatically
+include their matching feature-owned presentation extensions.
+
 Each harness compiles the **shipped sources** it guards rather than a copy of them, which is what makes
 the pure-layer boundary real: a harness that stops *compiling* means AppKit or SwiftUI has leaked into a
 `Model/` folder, or an effect has leaked into a decision. That is a more common failure than a broken

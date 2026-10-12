@@ -329,7 +329,7 @@ struct ChatMarkdownRenderer {
             } else if let start {
                 marker = "\(start + offset)."
             } else {
-                marker = "•"
+                marker = String(localized: "•")
             }
             let itemPath = path + [offset]
             for (index, block) in item.blocks.enumerated() {

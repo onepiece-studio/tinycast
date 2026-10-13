@@ -38,6 +38,8 @@ enum SettingsAnchor: String, CaseIterable, Sendable {
     case dictationMemory
     case dictationOutput
     case fileSearchFileSearch
+    case fileSearchFullDiskAccess
+    case fileSearchIndex
     case fileSearchCommands
     case fileSearchSearchScopes
     case fileSearchIgnorePatterns
@@ -121,6 +123,8 @@ enum SettingsAnchor: String, CaseIterable, Sendable {
         case .dictationMemory: .dictation
         case .dictationOutput: .dictation
         case .fileSearchFileSearch: .fileSearch
+        case .fileSearchFullDiskAccess: .fileSearch
+        case .fileSearchIndex: .fileSearch
         case .fileSearchCommands: .fileSearch
         case .fileSearchSearchScopes: .fileSearch
         case .fileSearchIgnorePatterns: .fileSearch
@@ -206,6 +210,8 @@ enum SettingsAnchor: String, CaseIterable, Sendable {
         case .dictationMemory: "Memory"
         case .dictationOutput: "Output"
         case .fileSearchFileSearch: "File Search"
+        case .fileSearchFullDiskAccess: "Full Disk Access"
+        case .fileSearchIndex: "Index"
         case .fileSearchCommands: "Commands"
         case .fileSearchSearchScopes: "Search Scopes"
         case .fileSearchIgnorePatterns: "Ignore Patterns"

@@ -119,12 +119,6 @@
     },
     "%lld commands": {
       "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld 个命令"
-          }
-        },
         "en": {
           "variations": {
             "plural": {
@@ -142,17 +136,17 @@
               }
             }
           }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 个命令"
+          }
         }
       }
     },
     "%lld items": {
       "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld 个项目"
-          }
-        },
         "en": {
           "variations": {
             "plural": {
@@ -170,17 +164,17 @@
               }
             }
           }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 个项目"
+          }
         }
       }
     },
     "%lld new extensions are selected. Selecting an installed extension updates it.": {
       "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "已勾选 %lld 个新扩展。勾选已安装的扩展会更新它。"
-          }
-        },
         "en": {
           "variations": {
             "plural": {
@@ -197,6 +191,12 @@
                 }
               }
             }
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已勾选 %lld 个新扩展。勾选已安装的扩展会更新它。"
           }
         }
       }
@@ -233,6 +233,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "菜单栏命令必须渲染 MenuBarExtra 或 null。"
+          }
+        }
+      }
+    },
+    "A sign-in window is already open. Finish it before starting another.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已有一个登录窗口打开。请先完成当前登录，再开始另一次登录。"
           }
         }
       }
@@ -996,12 +1006,12 @@
         }
       }
     },
-    "List, detail, form, grid, no-view and menu-bar commands, plus preferences and storage.": {
+    "List, detail, form, grid, no-view and menu-bar commands, preferences, storage and OAuth.": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "支持列表、详情、表单、网格、无界面和菜单栏命令，以及偏好设置和存储。"
+            "value": "支持列表、详情、表单、网格、无界面和菜单栏命令，以及偏好设置、存储和 OAuth。"
           }
         }
       }
@@ -1578,6 +1588,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "正在显示选项"
+          }
+        }
+      }
+    },
+    "Sign-in was cancelled.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "登录已取消。"
+          }
+        }
+      }
+    },
+    "Signing in during a background refresh is not supported.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "不支持在后台刷新期间登录。"
           }
         }
       }

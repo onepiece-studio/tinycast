@@ -64,6 +64,8 @@ enum SettingsRowID: String, CaseIterable, Sendable {
     case dictationOutputWhenFinished
     case dictationOutputAdaptCapitalization
     case fileSearchFileSearchEnableFileSearch
+    case fileSearchFullDiskAccessPermission
+    case fileSearchIndexIndexedItems
     case notesNotesEnableNotes
     case notesOptionsRenderMarkdown
     case notesOptionsShowFormattingBar
@@ -189,6 +191,8 @@ enum SettingsRowID: String, CaseIterable, Sendable {
         case .dictationOutputWhenFinished: .dictationOutput
         case .dictationOutputAdaptCapitalization: .dictationOutput
         case .fileSearchFileSearchEnableFileSearch: .fileSearchFileSearch
+        case .fileSearchFullDiskAccessPermission: .fileSearchFullDiskAccess
+        case .fileSearchIndexIndexedItems: .fileSearchIndex
         case .notesNotesEnableNotes: .notesNotes
         case .notesOptionsRenderMarkdown: .notesOptions
         case .notesOptionsShowFormattingBar: .notesOptions
@@ -314,6 +318,8 @@ enum SettingsRowID: String, CaseIterable, Sendable {
         case .dictationOutputWhenFinished: "When finished"
         case .dictationOutputAdaptCapitalization: "Adapt capitalization"
         case .fileSearchFileSearchEnableFileSearch: "Enable File Search"
+        case .fileSearchFullDiskAccessPermission: "Full Disk Access"
+        case .fileSearchIndexIndexedItems: "Indexed Items"
         case .notesNotesEnableNotes: "Enable Notes"
         case .notesOptionsRenderMarkdown: "Render Markdown"
         case .notesOptionsShowFormattingBar: "Show Formatting Bar"

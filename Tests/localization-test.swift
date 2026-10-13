@@ -60,6 +60,32 @@ struct LocalizationTests {
                 CalculatorPresentation.badge("UAE Dirham") == "UAE Dirham",
                 "English currency names keep their canonical spelling")
         }
+        expect(
+            SettingsAnchor.fileSearchFullDiskAccess.title == (chinese ? "完全磁盘访问权限" : "Full Disk Access"),
+            "file search permission label localizes")
+        expect(
+            SettingsRowID.fileSearchIndexIndexedItems.title == (chinese ? "已索引项目" : "Indexed Items"),
+            "file index row localizes")
+        expect(
+            SettingsSearchCatalog.results(for: chinese ? "重建" : "rebuild").first?.target
+                == .section(.fileSearchIndex),
+            "index search reaches the new section in both languages")
+        expect(
+            SettingsSearchCatalog.results(for: chinese ? "完全磁盘访问权限" : "Full Disk Access").first?.target
+                == .section(.fileSearchFullDiskAccess),
+            "permission search reaches the new section in both languages")
+        for (english, translated) in [
+            ("Kilometers per Liter", "千米/升"), ("Miles per Gallon", "英里/加仑"),
+            ("Liters per 100 Kilometers", "升/百公里")
+        ] {
+            expect(
+                CalculatorPresentation.badge(english) == (chinese ? translated : english),
+                "fuel unit: \(english)")
+        }
+        expect(
+            String(localized: "Sign-in was cancelled.", table: "Extensions")
+                == (chinese ? "登录已取消。" : "Sign-in was cancelled."),
+            "OAuth cancellation uses the extension catalog")
         let microphone = Bundle.main.localizedInfoDictionary?["NSMicrophoneUsageDescription"] as? String
         expect(
             microphone?.contains(chinese ? "听写" : "Dictation") == true,

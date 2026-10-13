@@ -6,6 +6,7 @@ if [ "${1:-}" != "--sources" ]; then
 fi
 shift
 node Scripts/check-localization.js
+node --test Tests/localization-sync-test.js
 scratch=$(mktemp -d "${TMPDIR:-/tmp}/tinycast-localization.XXXXXX")
 trap 'rm -rf "$scratch"' EXIT
 app="$scratch/Localization.app/Contents"

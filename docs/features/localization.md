@@ -65,12 +65,28 @@ Generated source files and resource packs remain owned by their existing generat
 4. Run `./Scripts/check-localization.sh`. It compiles the catalogs into an isolated temporary app
    and launches its harness in English, Simplified Chinese and an unsupported language. It checks
    bundle selection, fallback, permissions, search identity, bilingual search and plural formatting.
-5. Run the full suite, lint and Debug build. Inspect real screens in both languages, both appearances
+5. After a fresh Debug build, run `./Scripts/sync-localizations.sh --check <DerivedData>`.
+   This synchronizes temporary copies and fails on added, removed, stale or changed entries without
+   writing the catalogs. It checks compiler extraction, not untranslated ordinary String arguments.
+   The independent catalog checker validates InfoPlist translations; Swift extraction covers only
+   the main and extension text tables.
+6. Run the full suite, lint and Debug build. Inspect real screens in both languages, both appearances
    and each interface size, especially the shortcut recorder, dialogs and menu-bar surfaces.
 
 The localization harness is part of `run-tests.sh`; the catalog checker is part of `lint.sh`.
+Its synchronization fixtures verify that fresh catalogs pass, new/stale/source-changed entries fail,
+and check mode leaves every catalog byte unchanged.
 Harnesses that include a model also include its matching `Service/*Presentation.swift`, if present,
 so tests of existing labels and errors still compile the shipped implementation.
 
 The initial Chinese translation was reconciled from the sibling `tinycast-cn` project against this
 checkout's extracted English keys. That checkout is not a build, test or runtime dependency.
+
+## Merging upstream
+
+Merge upstream changes while retaining localized presentation and stable Settings identities. Generate
+`Tinycast.xcodeproj` from the merged `project.yml` instead of resolving generated project hunks by hand.
+Review every added or changed user-facing literal in the upstream diff, including ordinary String
+arguments, ternaries, interpolation, AppKit properties and joined sentences. Protocol fields, paths,
+model instructions and third-party text remain literal. Then build into fresh DerivedData, synchronize,
+translate and review removed entries, and run both the freshness check and language harness.
